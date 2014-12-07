@@ -1,0 +1,89 @@
+<!-- l'en-tête -->
+	<!-- le menu -->
+	<nav id="main_menu">
+		<div id="menu" class="menu">
+			<ul>
+				<li><a class="pushstate" href="accueil">Accueil</a></li>
+				<li><a class="pushstate" href="game">Jeux</a></li>
+			
+				<li><a class="pushstate" href="changelog">ChangeLog</a></li>
+				<li><a class="pushstate" href="bugtracker">BugTracker</a></li>
+
+				<li><a href="#">Forum</a></li> 
+			</ul>
+			<ul id="menu_editeur">
+				<li><a class="pushstate" href="carte">Editeur</a></li>
+				<li><a class="pushstate" href="spritemaker">SpriteMaker</a></li>
+			</ul>
+			<ul id="action"> <!-- la partie avec certaine commande quand tu est connecté -->
+				
+			</ul>
+			
+			<ul style="float: right;"> <!-- recherche -->
+				<li><input type="search" style="width:120px;" placeholder="recherche"></li>
+				<li><input type="submit" value="ok"></li>
+			</ul>
+			
+			<ul id="userdata" style="float: right;"> <!-- affiche soit le connexion et inscription ou les information du gars connecté -->
+				<li><a id="connexion" class="pushstate" href="connect" class="bouton" name="connection" onclick="connection('connection');">Se connecter</a></li>
+				<li><a id="inscription" class="pushstate" href="inscription" class="bouton" name="inscrire" onclick="connection('inscrire');">Créer un compte</a></li>
+			</ul>
+			
+		</div>
+	</nav>
+
+	<div id="connection" style="display:none;">
+		<form onsubmit="valid_connect(this); return false;" id='form_connect'>
+			pseudo <br>
+			<input type="text" name="pseudo">
+			<br>......................................<br>
+			mot de passe <br>
+			<input type="password" name="mdp">
+			<br>......................................<br>
+			<label> <input type="checkbox" > Se souvenir de moi </label><br>
+			<input type="reset" value="Annuler" onclick="fermer(truc);"> <input type="submit">
+			<hr>
+			<a name="m" href="#">mot de passe perdu</a>
+			<br>
+			<a name="inscrire" href="#">Créer un compte</a>
+		</form>
+	</div>
+	
+	<div id="inscrire" style="display:none;">
+		<form onsubmit="valid_inscrit(this); return false;" id='form_inscrire' method="POST" action="/twop/include/inscrire.php">
+			pseudo <br>
+			<input type="text" name="pseudo"><hr>
+			mot de passe <br>
+			<input type="password" name="mdp"><hr>
+			confirmation <br>
+			<input type="password" name="confirm"><hr>
+			e-mail <br>
+			<input type="text" name="mail"><hr>
+			<input type="reset" onclick="fermer(truc);"> <input type="submit">
+			<hr>
+			<a name="connection" href="#">mot de passe perdu</a><br>
+			<a name="inscrire" href="#">Créer un compte</a>
+		</form>
+	</div>
+	<div id="ajoutlog" style="display:none;" >
+		<form id='form_ajoutlog' method="POST" action="/twop/include/ajouterlog.php">
+			<label>Version : <input type="text" name="version"></label><br>
+			<label>Date : <input type="text" name="jour" id="jourlog"></label> <input onclick="ajouterJour()" type="button" value="ajd"><br>
+			<label>Categorie : <input type="text" name="cat" id="catbug"></label><br>
+			<label>Log : <br><textarea name="log" ></textarea></label><br>
+			<input type="submit" value="ajouter">
+		</form>
+	</div>
+	<div id="ajoutbug" style="display:none;" >
+		<form id='form_ajoutbug' method="POST" action="/twop/include/ajouterbug.php">
+			<label>Date : <input type="text" name="jour" id="jourbug"></label> <input type="button" value="ajd"><br>
+			<label>Categorie/Lieu : <input type="text" name="cat" id="catlog"></label><br>
+			<label>Bug : <textarea name="bug" ></textarea></label><br>
+			<input type="submit" value="ajouter">
+		</form>
+	</div>
+	
+	<div id="help_form"> <!-- l'aide qui s'affiche quand le formulaire n'est pas valide-->
+	</div>
+	
+

@@ -1,0 +1,5 @@
+{
+	"transfert" : [15, 20, "nomMap.json"], [0, 20, "nomMap.json"],
+
+	"map1" : {"propriete de la carte"}
+}

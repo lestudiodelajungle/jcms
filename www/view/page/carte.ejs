@@ -1,0 +1,141 @@
+<div id="help_form">
+	<!-- l'aide qui s'affiche quand le formulaire n'est pas valide-->
+
+</div>
+
+
+<nav id="rpg_bar_menu">
+	<img src="/images/Folder.png" id="openMap" alt="ouvrir" title="ouvrir">
+	<img src="/images/Add.png" id="btnNewMap" alt="nouveau" title="nouveau">
+	<img src="/images/Save.png" id="saveMap" alt="sauvegarder" title="sauvegarder">
+	<img src="/images/Remove.png" id="supprimerMap" alt="supprimer" title="supprimer">
+	<img src="/images/Refresh.png" id="recharger" alt="recharger" title="recharger">°°
+
+	<img src="/images/Previous.png" alt="" title="précedent">
+	<img src="/images/Next.png" alt="suivant" title="suivant">°°
+
+	<img src="/images/Cut.png" alt="couper" title="couper">
+	<img src="/images/Copy.png" alt="copier" title="copier">
+	<img src="/images/Paste.png" alt="coller" title="coller">°°
+
+	<img name="0" id="couche1" src="/images/couche_dessous.png" alt="couche basse" title="couche dessous" width="24" height="24">
+	<img name="1" id="couche2" src="/images/couche_milieu.png" alt="couche milieu" title="couche milieu" width="24" height="24">
+	<img name="2" id="couche3" src="/images/couche_dessus.png" alt="couche haute" title="couche dessus" width="24" height="24">
+	<img name="3" id="couche4" src="/images/cube.png" alt="couche evenement" title="evenement" width="24" height="24">°°
+
+	<img name="3" id="crayon" src="/images/Modify.png" alt="crayon" title="crayon" width="24" height="24">
+	<img name="3" id="selection" src="/images/selection.png" alt="selection" title="selection" width="24" height="24">
+	<!--
+		<img name="3" id="gomme" src="/twop/media/site/gomme.png" alt="gomme" title="gomme" width="24" height="24" > 
+-->
+	<label>
+		<input type="checkbox" id="gomme">gomme</label>
+	°°°°
+	<img id="parametre" src="/images/Pinion.png" alt="option" title="option">
+</nav>
+
+
+
+<aside id="asideleft">
+
+	<!-- le menu de gauche avec les onglets -->
+	<div id="tabbed_box" class="tabbed_box">
+		<div class="tabbed_area">
+
+
+			<ul class="tabs">
+				<li>
+					<a href="javascript:ChangeOnglet('tab_1', 'content_1');" id="tab_1" class="active">Fichier</a>
+				</li>
+				<li>
+					<a href="javascript:ChangeOnglet('tab_2', 'content_2');" id="tab_2">Passage</a>
+				</li>
+				<li>
+					<a href="javascript:ChangeOnglet('tab_3', 'content_3');" id="tab_3">Options</a>
+				</li>
+			</ul>
+
+
+
+			<div id="content_1" class="content">
+
+
+				<select id="idcarte">
+					<option selected value="">................</option>
+					<option value="Grotte1">Grotte1</option>
+					<option value="test">test</option>
+					<option value="Temple3">Temple3</option>
+					<option value="Town2">Town2</option>
+					<option value="Forest2">Forest2</option>
+					<option value="Town">Town</option>
+					<option value="Temple2">Temple2</option>
+					<option value="Temple">Temple</option>
+					<option value="Temple1">Temple1</option>
+					<option value="Forest1">Forest1</option>
+					<option value="MAP001">MAP001</option>
+					<option value="undefined">undefined</option>
+				</select>
+
+				<p id="largeur"></p>
+				<p id="hauteur"></p>
+
+			</div>
+			<div id="content_2" class="content">
+				<label>
+					<input type="checkbox" name="passage" id="passage">Editer les passages</input>
+				</label>
+			</div>
+			<div id="content_3" class="content">
+				<ul>
+					<input type="text" style="width: 150px;" placeholder="nom de la carte" id="iptnomcarte">
+					<input id="changenom" type="submit" value="ok">
+					<label>
+						<input id="btngrille" type="checkbox">Grille</input>
+					</label>
+					<br>
+					<label>
+						<input type="checkbox">Cacher les couches</input>
+					</label>
+					<br>
+					<label>
+						<input type="checkbox">Afficher passage</input>
+					</label>
+				</ul>
+			</div>
+			<div id="tileset" style="height:50%; width:270px; overflow:auto;">
+				<!-- c'est ici que javascript va afficher le tileset -->
+			</div>
+		</div>
+		<div id="divConsole">
+			<div style="float:left;">
+				<a href="#">Console</a>
+				<select>
+					<option>Tout</option>
+					<option>Erreur</option>
+					<option>Succes</option>
+					<option>Divers</option>
+				</select>
+			</div>
+
+			<div style="float:right;">
+				<a href="#">Vider</a>
+			</div>
+
+			<div id="console"></div>
+		</div>
+	</div>
+</aside>
+
+
+<section id="section">
+	<%= hash %>
+</section>
+
+<div id="filter"></div>
+<div id="popup" style="border-radius:10px;position:absolute;border:3px solid black;padding:10px;background:white;display:none;"></div>
+
+<footer id="footer-info">
+	<div id="etat" style="display:inline-block; float:left">etat :</div>
+
+	<div id="coord" style="display:inline-block; float:right"></div>
+</footer>

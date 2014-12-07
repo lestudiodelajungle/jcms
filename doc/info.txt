@@ -1,0 +1,178 @@
+=====PROJET DE CMS EN JAVASCRIPT AVEC NODEJS=====
+=== details ===
+nom du projet: JCMS
+auteur: severin
+version: developpement
+description: un cms en javascript avec Nodejs et MongoDB
+
+=== INTRODUCTION ===
+JCMS est comme son nom l'indique un CMS (content manage system) ecris entierement en JavaScript
+l'idée m'es venu lors du develloppement d'un autre projet ou j'avais besoin d'un serveur nodejs
+et d'un site pour l'encadrer, et je ne voulais pas utiliser deux serveur pour faire fonctionner
+le tout (php pour le site et nodejs pour le jeux).
+
+le systeme de JCMS repose sur le principe de noeuds (un peu comme drupal) en effet chaque model
+de donnée peut etre considéré comme un noeud, un noeud peu tres bien etre un article, une page,
+un client.
+
+un noeud est constitué de plusieurs propriété qui sont elle même representé par un index (son nom)
+et par une valeur qui peuvent etre une chaine, un nombre, une date, voir une liste de valeur ou
+meme un autre noeud.
+
+=== BASE DE DONNEE ===
+
+http://imaginea.github.io/mViewer/0.9.2/
+
+=== L'APPLICATION ===
+
+== Server.js ==
+l'application se lance par le fichier Server.js qui se situe à la racine du projet, c'est lui qui
+recupere tout ce qu'il faut pour le fonctionnement du serveur et du site.
+il charge les noeuds
+
+== Noeud.js ==
+un noeud regroupe des modeles, des controleurs, des vues et des routes,
+il les charges et fait en sorte qu'il fonctionnent bien entre eux
+
+
+==== LIEN ====
+- documentation express.js
+    http://expressjs.com/4x/api.html
+    
+- tutoriel mongoose
+    http://atinux.developpez.com/tutoriels/javascript/mongodb-nodejs-mongoose/
+    
+- type schemma mongoose
+    http://mongoosejs.com/docs/schematypes.html
+    
+- documentation backbone.js
+    http://backbonejs.org/
+    
+- documentation socket.io
+    http://socket.io/docs/rooms-and-namespaces/
+    
+- documentation Node.js
+    http://nodejs.org/api/
+    
+- ecrire service REST
+    http://naholyr.fr/2011/08/ecrire-service-rest-nodejs-express-partie-1/
+    
+- REST en 5 regles
+    http://blog.nicolashachet.com/niveaux/confirme/larchitecture-rest-expliquee-en-5-regles/
+    
+- liste des relation des lien
+    http://www.iana.org/assignments/link-relations/link-relations.xml
+    
+- MySQL pour nodejs
+    https://www.npmjs.org/package/mysql
+
+===========================================================
+TODO
+===========================================================
+
+- panneau admin
+
+  === base de donnée ===
+- completer le mongodb/index.js avec la gestion de requete bien chiadé
+  et finir le database/index.js
+  
+  === modules ===
+- faire un module qui enregistre les noeuds (modele, controleur, route, ou meme vue) en modifiant
+  directement les fichiers du module
+- faire une classe qui enregistre les noeuds (modele, controleur, route, vue) dans une base de donnée
+  en partant des fichier d'origine d'un module
+- faire une classe qui puissent charger les module à partir de la base de donnée
+
+===========================================================/
+
+
+
+===========================================================
+        CHANGELOG
+===========================================================
+
+
+- implementation des noeuds
+- integration de mongodb avec mongoose
+- chargement automatique des routes
+- coeur de l'application
+
+===========================================================/
+
+
+
+=======================================
+        arborescence du projet
+=======================================
+├── node_modules
+├── serveur                 // toute la partie serveur, utilisé seulement par le serveur (Server.js)
+│   ├── controleur
+│   ├── database            // contient lesscript d'acces a la base de donnée
+│   │   ├── mongodb         // pour gerer mongodb
+│   │   │   └── index.js
+│   │   ├── mysql           // pour gerer mysql
+│   │   ├── sqlite          // pour gerer sqlite
+│   │   ├── connect.js      // integre le bon type de bdd selon le config.json
+│   │   └── page.json
+│   ├── modele
+│   ├── route               // route du site
+│   │   ├── index.js
+│   │   └── page.js
+│   ├── schemma             // schemma des modele pour mongodb
+│   │   └── page.json
+│   ├── Noeud.js            // la classe noeud coté serveur
+│   └── noeuds.json         // liste des noeuds à charger
+├── www                     // toute la partie publique, se qui sera vu par les visiteur
+│   ├── css                 // contient les fichiers CSS
+│   ├── Data                // les fichier servant au jeux en ligne
+│   ├── images
+│   ├── js                  // contient les fichier js pour le coté client
+│   │   ├── lib             // contient les framework js ou tout ce qui n'est pas de moi
+│   │   ├── mapMaker
+│   │   ├── modules         // contient des script unique
+│   │   ├── rpg
+│   │   ├── app.js          // le script principale du coté client
+│   │   ├── main.js         // le script de require.js
+│   │   ├── nav.js          // le menu responcive
+│   │   └── Noeud.js        // la classe qui represente les noeuds
+│   └── view                // contient les templates du site
+│       ├── block
+│       ├── page
+│       └── layout.html
+├── config.json             // le fichier config qui sert à initialiser le serveur
+├── info.txt                // le fichier que vous etes en train de lire
+├── nodemon.json            // fichier de configuration pour le module nodemon
+├── package.json            // fichier pour les projets nodejs, sert à installer les modules nécessaire
+└── Server.js               // le fichier principale qu'il faut lancer pour demarrer le serveur
+==========================================
+
+
+
+==========================================
+        arborescence d'un module
+==========================================
+├── unModule
+    ├── serveur
+    │   ├── controleur
+    │   │   └── controleur.js
+    │   └── modele
+    │       └── modele.js
+    ├── www
+        ├── css
+        │   └── unModule.css
+        ├── js
+        │   └── unModule.js
+        └── view
+            └── unModule
+                └── pleinDeVue.ejs
+===========================================
+
+
+===========================================
+                UML
+===========================================
+à venir
+
+
+
+===========================================

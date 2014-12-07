@@ -1,0 +1,22 @@
+{
+    "titre": "the world online project",
+    "identifiant-site": "twop",
+    "admin": "sev794",
+    "mdp_admin": "1598753",
+    "favicon": "public/favicon.ico",
+
+    "view engine": "hbs",
+    "db": "mongodb",
+    "bdd": {
+        "mysql": {
+            "host": "127.0.0.1",
+            "user": "root",
+            "mdp": "sev1598753",
+            "database": "test"
+        },
+        "mongodb": {
+            "host": "127.0.0.1",
+            "database": "site"
+        }
+    }
+}

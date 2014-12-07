@@ -1,0 +1,20 @@
+==== les clauses sql ====
+select
+from
+where
+and
+or
+not
+like %%
+between
+order by
+group by
+count
+avg
+sum
+max
+min
+having
+distinct
+as
+in
