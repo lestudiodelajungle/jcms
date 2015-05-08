@@ -1,0 +1,37 @@
+textarea{
+	width : 300px;
+	height : 300px;
+}
+
+#typeChamp{
+	display : none;
+}
+
+#page{
+	overflow : auto;
+}
+
+#liste li:nth-child(2n+1)
+{
+    background: #eda5a5;
+}
+
+#liste li{
+	display: block;
+	width : 100px;
+}
+
+#liste table td:first-child{
+	width : 20px;
+}
+
+td{
+	margin : 5px;
+	padding : 5px;
+}
+
+.hulk-input-textarea{
+	min-width : 600px;
+	width : 70%;
+	height : 500px;
+}

@@ -1,231 +1,95 @@
-/////////////////////////////// v2 /////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-// twop: the world online project
-// réalisé par: séverin parthenay
-// version: developpement
-/////////////////////////////////////////////////////////////////////////
 /*jslint nomen: true, devel: true */
-/*globals require, process, __dirname, code*/
+/*globals require, process, __dirname, code, GLOBAL, exports*/
+(function () {
+	"use strict";
 
-function Serveur() {
-    "use strict";
-    /*globals require*/
-    this.ejs = require('ejs');
-    // engine = require('ejs-locals'),
-    this.url = require("url");
-    this.http = require('http');
-    this.fs = require("fs"); // acces aux fichier
-    //sio = require('socket.io-sessions'), // session par socket
-    this.express = require('express');
-    //this.bodyParser = require('body-parser'),
-    //this.methodOverride = require('method-override'),
-    this.CONFIG = require(__dirname + "/config/config.json"); // on charge la config
-    this.Noeud = require(__dirname + "/serveur/classe/Noeud");
-    this.lesNoeuds = {};
-    //stockage local
-    this.store = {};
-    this.s = this.store;
-}
+	function Serveur() {
+		this.CONFIG = require(__dirname + "/config/config.json"); // on charge la config
+		this.express = require('express');
+		this.app = this.express();
+		this.bodyParser = require('body-parser');
+		this.methodOverride = require('method-override');
+		this.cluster = require('cluster');
 
-// initialise les variable et la config du serveur
-Serveur.prototype.init = function () {
-    "use strict";
-    var i, unNoeud;
-    this.app = this.express();
-    this.configure();
-    this.noeuds = require(__dirname + "/config/noeuds.json");
+		this.isMultiThread = false; // pour que l'appli soit multi-thread ou non
 
-    //this.test2(); /// TEST
+		this.args = process.argv.slice(2);
 
-    //integre tout les script de rootage
-    for (i in this.noeuds) {
-        if (this.noeuds.hasOwnProperty(i)) {
-            this.lesNoeuds[i] = new this.Noeud(this.noeuds[i], this.app);
-        }
-    }
+		this.info = {
+			"adresse": "",
+			"port": "",
+			"env": ""
+		};
 
-    this.start();
-};
+		this.about = {
+			"nom": "jcms",
+			"version": "beta 0.1",
+			"auteur": "severin"
+		};
+	}
 
-//////////////////////////////// Configuration du serveur //////////////////////////////////
-Serveur.prototype.configure = function () {
-    "use strict";
-    // this.register('.html', require('ejs'));
+	Serveur.prototype.start = function () {
+		var i, cpuCount, idWorker,
+			nom = this.about.nom;
 
-    this.app.engine('html', this.ejs.__express);
-    this.app.set('views', __dirname + '/www/view'); // la ou sont les vues
-    this.app.use(this.express.static(__dirname + '/www'));
-    // this.app.set('view engine', 'html');
-    // this.app.engine('html', this.ejs.renderFile);
+		if (this.isMultiThread === true) {
+			// gestion du multi-threading
+			if (this.cluster.isMaster) {
+				console.log("Démarage de l'application : " + nom);
 
-    this.app.set('view engine', 'html'); // On utilise le moteur de template "EJS"
-    this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
-        layout: "/home/severin/web/cms/www/view/layout.ejs"
-        //page: 'truc',
-        //title: 'twop'
-    }); // Dans tous nos templates
-    // this.use(express.multipart({ uploadDir= "public" }));
-    //this.app.use(this.bodyParser()); // parser les valeur de formulaire
-    //app.use(express.favicon(__dirname + '/www/public/images/favicon.ico')); // le favicon
-    //app.use(express.methodOverride());
-    //app.use(app.router);
-};
+				cpuCount = require('os').cpus().length; // on compte le nb de cpu disponible
+				// on créer un worker pour chaque cpu
+				for (i = 0; i < cpuCount; i += 1) {
+					this.cluster.fork();
+				}
+			} else { // pour chaque worker on execute le code si-dessous
+				idWorker = this.cluster.worker.id;
+				this.startServeur(idWorker);
+			}
+		} else {
 
-///////////// demarage du serveur /////////
-Serveur.prototype.start = function () {
-    "use strict";
-    var server = this.app.listen(3000, '0.0.0.0', function () {
-        console.log("Serveur express démarré à l'adresse %s sur le port %d", server.address().address, server.address().port);
-    });
-    this.server = server;
-};
+			require("./modules/core/").Core(this.app);
+			this.startServeur();
 
-Serveur.prototype.socket = function () {
-    "use strict";
-    this.io = require('socket.io').listen(this.server);
-    this.io.sockets.on('connection', function () { /*parametre: socket*/
-        console.log("test");
-    });
-};
+		}
+
+	};
+
+	Serveur.prototype.startServeur = function (idWorker) {
+		var server,
+			adresse = this.args[0] || "0.0.0.0",
+			port = this.args[1] || 3000,
+			info = this.info,
+			nom = this.about.nom;
+
+		server = this.app.listen(port, adresse, function () {
+			var msg = idWorker ? "Cluster " + idWorker + " démarré à l'adresse %s:%d" : "serveur " + nom + " démarré à l'adresse %s:%d";
+			console.log(msg,
+				server.address().address,
+				server.address().port);
+			info = {
+				"adresse": server.address().address,
+				"port": server.address().port
+					//		"env": ""
+			};
+		});
+	};
 
 
-
-Serveur.prototype.module_exist = function (name) {
-    "use strict";
-    try {
-        require(name);
-    } catch (err) {
-        if (err.code === 'MODULE_NOT_FOUND') {
-            return false;
-        }
-    }
-
-    return true;
-};
-
-Serveur.prototype.test = function () {
-    "use strict";
-    var mongoose = require('mongoose');
-
-    mongoose.connect('mongodb://localhost/site', function (err) {
-        if (err) {
-            throw err;
-        }
-    });
-
-    var schemma = new mongoose.Schema({
-        "meta": {
-            "charset": String,
-            "description": String,
-            "title": String,
-            "favicon": String,
-            "meta_key": Array
-        },
-        "template": {
-            "layout": String,
-            "head": String,
-            "header": String,
-            "body": String,
-            "footer": String
-        },
-        "css": Array,
-        "javascript": Array
-    });
-
-    var modele = mongoose.model('page', schemma);
+	exports.Serveur = Serveur;
 
 
-    // On crée une instance du Model
-    var monCommentaire = new modele({
-        "meta": {
-            "charset": "utf-8",
-            "description": "un projet de jeux en ligne (massivement) multijoueur avec un editeur de carte et de skin",
-            "title": "world online project",
-            "favicon": "image/favicon.ico"
-        },
-        "template": {
-            "layout": "layout",
-            "head": "head",
-            "header": "header",
-            "body": "accueil",
-            "footer": "footer"
-        },
-        "css": [
-            "theme_twop"
-        ],
-        "javascript": [
-            "ejs",
-            "backbone-localstore",
-            "socket.io",
-            "jquery",
-            "undescore",
-            "backbone",
-            "model",
-            "route",
-            "view",
-            "script"
-        ]
-    });
+	Object.prototype.toType = function () {
+		return ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	};
 
-    // On le sauvegarde dans MongoDB !
-    monCommentaire.save(function (err) {
-        if (err) {
-            throw err;
-        }
-        console.log('Commentaire ajouté avec succès !');
-        // On se déconnecte de MongoDB maintenant
-    });
+	/* definition des variable global*/
+	GLOBAL.dirRoot = __dirname;
+	GLOBAL.Promise = require("rsvp"); // pour la gestion des Promise qui n'est par encore implementé partout
+	var serveur = new Serveur();
+	GLOBAL.serveur = serveur;
 
-    var query = modele.find(null);
-    // peut s'écrire aussi query.where('pseudo', 'Atinux').limit(3);
-    query.exec(function (err, comms) {
-        if (err) {
-            throw err;
-        }
-        // On va parcourir le résultat et les afficher joliment
-        console.log(comms);
-    });
+	/* demarrage de l'application*/
+	serveur.start();
 
-    //    var rtest = require(global.dirRoot + "/serveur/database/mongodb");
-    //    var test = new rtest.MongoDB("site");
-    //    test.connect();
-    //    test.new("page", schemma);
-    //    test.getAll()
-    //    var truc = test.db;
-    console.log("test444 : ");
-    //test.db = "tesst";
-};
-
-Serveur.prototype.test2 = function () {
-    "use strict";
-    var mongoose = require('mongoose');
-
-    var schemma = new mongoose.Schema({
-        "meta": {
-            "charset": String,
-            "description": String,
-            "title": String,
-            "favicon": String,
-            "meta_key": Array
-        },
-        "template": {
-            "layout": String,
-            "head": String,
-            "header": String,
-            "body": String,
-            "footer": String
-        },
-        "css": Array,
-        "javascript": Array
-    });
-
-    var rtest = require(global.dirRoot + "/serveur/database/mongodb");
-    var test = new rtest.MongoDB("site");
-    test.connect();
-    test.new("page", schemma);
-    test.getAll();
-};
-
-GLOBAL.dirRoot = __dirname;
-GLOBAL.serveur = serveur = new Serveur();
-serveur.init();
+}());

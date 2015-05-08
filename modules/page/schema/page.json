@@ -1,0 +1,30 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"description": "un projet de jeux en ligne (massivement) multijoueur avec un editeur de carte et de skin",
+		"title": "world online project",
+		"favicon": "image/favicon.ico"
+	},
+	"template": {
+		"layout": "layout",
+		"head": "head",
+		"header": "header",
+		"body": "accueil",
+		"footer": "footer"
+	},
+	"css": [
+        "theme_twop"
+    ],
+	"javascript": [
+        "ejs",
+        "backbone-localstore",
+        "socket.io",
+        "jquery",
+        "undescore",
+        "backbone",
+        "model",
+        "route",
+        "view",
+        "script"
+    ]
+}

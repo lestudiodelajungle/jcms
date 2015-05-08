@@ -1,0 +1,223 @@
+/*------------------------------------ API JCMS ---------------------------------*/
+
+== COTE SERVEUR
+======================================
+	JCMS: variable principale de l'API
+	attribut:
+		// module NPM
+		ejs
+		url
+		http
+		fs 
+		express
+		bodyParser
+		methodOverride
+		
+		
+		CONFIG: config au format JSON de l'application
+		lesNoeuds: contient les nœuds de l'application
+
+		store: stockage mémoire
+		nom: nom de l'application
+		version: version de l'application
+	méthode:
+		init(): initialise les variable selon le config.json
+		start(): démarre le serveur
+		socket(): ouvre une connexion socket
+	FIN JCMS
+    
+Noeud
+    nom
+        chaine: nom du noeud
+    nomFormat
+        chaine: nom du noeud en minuscule
+    init
+        charge le mvc du noeud
+    unload
+        decharge le mvc du noeud en dé-écoutant les routes
+    reload
+        unload puis init le noeud
+    
+Database
+    connect
+        connection a la base de donnée
+    create
+        créer une nouvelle table
+    drop
+        supprime une table
+    insert
+        insert dans une table
+    selectWhere
+        selectionne plusieurs enregistrement dans une table
+    selectAll
+        selectionne tout les element d'une table
+    updateWhere
+        met a jour des elements d'une table
+    updateAll
+        met a jour tout les elements d'une table
+    deleteWhere
+        supprime des enregistrement d'une table
+    deleteAll
+        supprime tout les enregistrement d'une table
+    count
+        compte le nombre d'enregistrement d'une selection
+
+Modele
+    connect
+        connection a la base de donnée
+    create
+        créer une nouvelle table
+    drop
+        supprime une table
+    insert
+        insert dans une table
+    selectWhere
+        selectionne plusieurs enregistrement dans une table
+    selectAll
+        selectionne tout les element d'une table
+    updateWhere
+        met a jour des elements d'une table
+    updateAll
+        met a jour tout les elements d'une table
+    deleteWhere
+        supprime des enregistrement d'une table
+    deleteAll
+        supprime tout les enregistrement d'une table
+    count
+        compte le nombre d'enregistrement d'une selection
+    
+    
+Controleur
+    create
+        créer une nouvelle table
+    drop
+        supprime une table
+    insert
+        insert dans une table
+    selectWhere
+        selectionne plusieurs enregistrement dans une table
+    selectAll
+        selectionne tout les element d'une table
+    updateWhere
+        met a jour des elements d'une table
+    updateAll
+        met a jour tout les elements d'une table
+    deleteWhere
+        supprime des enregistrement d'une table
+    deleteAll
+        supprime tout les enregistrement d'une table
+    count
+        compte le nombre d'enregistrement d'une selection
+
+Route
+    app.get("unNoeud/:id?")
+    app.post("unNoeud/:id?")
+    app.put("unNoeud/:id?")
+    app.delete("unNoeud/:id?")
+        ecoute la route "unNoeud/:id?"
+    get
+        recupere une ou plusieurs ressources
+    post
+        créer une nouvelle ressource
+    put
+        modifie une ressource
+    delete
+        supprime une ressource
+
+== COTE CLIENT
+======================================
+	JCMS: variable principale de l'API
+	attribut:
+
+	methode:
+
+====================================================
+|----------------- LES ROUTES ---------------------|
+====================================================
+
+les routes sont composé a partir d'une méthode (get, post, put, delete) du nom du nœud et éventuellement d'un paramètre
+ex: http://monsite/page/accueil
+ici on demande un nœud page ayant le titre "accueil"
+
+on peut cumuler les couple nœud/id
+ex: http://monsite/page/nom/commentaire/1
+affichera la première page de commentaire pour la page "nom"
+
+les routes de base
+|-----------------------------------------------|
+|  TYPE  |    URL    | ACTION                   |
+|-----------------------------------------------|
+|  GET   | :id?      | affiche la page          |-\____ affiche seulement la page
+|  GET   | /         | affiche page d'accueil   |-/     mais renvoie pas de donné
+|  GET   | page/     | récupéré tte les pages   |
+|  GET   | page/:id? | récupéré la page         |
+|  POST  | page/     | créer une page           |
+|  PUT   | page/:id? | modifie une page         |
+| DELETE | page/:id? | supprime une page        |
+|-----------------------------------------------|
+
+*pour que chaque module puisse communiquer ensemble ils devront au minimum possédé ces méthodes
+//TODO: a voir si on sélectionne l'ID ou le TITRE
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+TODO
+les classe a faire
+classe tpl
+	classe qui génère les template peut importe le moteur (ejs, hbs, mustache)
+
+classe admin
+	middleware qui contrôle si l'action est autoriser par les droit du visiteur
+
+classe de mémoire cache
+	garderait en mémoire certaine donné qui serait souvent demander
+	
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+générateur de nœuds
+une classe qui permet de créer les script M, V et C d'un nœuds a partir d'un formulaire
+devra générer un script route.js, control.js, model.js, et au moins un template
+pour les 3 premiers il devra générer les méthodes suivante
+	- get nœud			récupère un nœud
+	- get nœud id		récupère le nœud de l'id correspondant
+	- get nœud where	récupère les nœuds correspondant a la clause where
+	- post nœud		créer une nouvelle entité de nœud
+	- put id			modifie le nœud "id"
+	- delete id			supprime le nœud "id"
+	
+pour les template, le développeur devra les écrire lui-même a partir d'un éditeur (intégré au cms ou pas), y'aura éventuellement quelque exemple
+	
+classe gen
+privée
+	- modele
+	- 
+publique
+	+ gen_classe
+
+fonctionnement
+
+- récupérer le nœud dans la base
+
+
+/*------ BASE DE DONNEES -------*/
+base:
+    - site
+        page
+        commentaire
+    - cms
+        plugins
+        module
+
+
+
+faut que route/page.js extand de 
+
+
+
+
+
+
+

@@ -4,8 +4,7 @@
     "admin": "sev794",
     "mdp_admin": "1598753",
     "favicon": "public/favicon.ico",
-
-    "view engine": "hbs",
+    "view_engine": "ejs",
     "db": "mongodb",
     "bdd": {
         "mysql": {
