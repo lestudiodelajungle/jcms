@@ -1,0 +1,49 @@
+<!-- l'en-tête -->
+<!-- le menu -->
+<nav class="navbar navbar-default" id="main_menu">
+	<div class="container-fluid">
+		<div class="collapse navbar-collapse">
+			<ul id="menu" class="nav navbar-nav">
+				<li><a class="pushstate" href="/page/accueil">Accueil</a>
+				</li>
+				<li><a class="pushstate" href="/page/game">Jeux</a>
+				</li>
+
+				<li><a class="pushstate" href="/page/changelog">ChangeLog</a>
+				</li>
+				<li><a class="pushstate" href="/page/bugtracker">BugTracker</a>
+				</li>
+
+				<li><a href="#">Forum</a>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul id="menu_editeur" class="nav navbar-nav">
+				<li><a class="pushstate" href="/page/carte">Editeur</a>
+				</li>
+				<li><a class="pushstate" href="/page/spritemaker">SpriteMaker</a>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse">
+
+			<ul class="nav navbar-nav" style="float: right;">
+				<li>
+					<input type="search" style="width:120px;" placeholder="recherche">
+				</li>
+				<li>
+					<input type="submit" value="ok">
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav" id="userdata" style="float: right;">
+				<li><a id="connexion" class="pushstate" href="connect" class="bouton" name="connection" onclick="connection('connection');">Se connecter</a>
+				</li>
+				<li><a id="inscription" class="pushstate" href="inscription" class="bouton" name="inscrire" onclick="connection('inscrire');">Créer un compte</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

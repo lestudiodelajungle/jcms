@@ -93,3 +93,20 @@
 	serveur.start();
 
 }());
+
+
+/*
+
+
+	<div class="conteiner-fluid">
+		<div class="row">
+		<% include block/header.html %>
+
+		<%- body %>
+
+		</div>
+	<% include block/footer.html %>
+		</div>
+
+
+*/

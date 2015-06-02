@@ -1,36 +1,47 @@
 /*
 	cette classe sert à généré un template à partir de certaine données
 */
+/*jslint nomen: true, es5: true*/
 /*globals exports, require, dirRoot, console, RSVP, rsvp, fs, promises*/
 (function (exports) {
 	"use strict";
-	var rsvp = require("rsvp");
-	var fs = require("fs");
-	var ejs = require("ejs");
+	var rsvp = require("rsvp"),
+		fs = require("fs"),
+		ejs = require("ejs");
 	/**
 	 * constructeur
 	 */
 	function Template(filePath, options, callback) {
-		console.log("test");
-		var data = options;
 		this.liste = []; //require(dirRoot + "/config/template.json"); // liste des bloc
 		this.bloc = []; // liste les contenu des bloc
 		this.html = ""; // le rendu final
 
+
+		var promises,
+			layoutpath,
+			data = options,
+			t2 = "tututut";
+		this.layoutpath = dirRoot + '/modules/core/public/view/layout.html';
+
+
+		if (options.admin && options.admin === true) {
+
+			this.layoutpath = dirRoot + '/modules/core/admin/view/layout.html';
+		}
 		this.init(filePath);
-		var t2 = "tututut";
-		var promises = this.liste.map(this.loadFile);
+		layoutpath = this.layoutpath;
+		console.log("toto+ " + this.layoutpath);
+		promises = this.liste.map(this.loadFile);
 		rsvp.all(promises).then(function (files) {
 			// proceed - files is array of your files in the order specified above.
 
 			var t1 = ejs.render(files[1]); //la vue
-
 			data = {
 				body: t1,
-				filename: dirRoot + '/modules/core/public/view/layout.html'
+				filename: layoutpath
 			};
 
-			var t2 = ejs.render(files[0], data); //layout.html
+			t2 = ejs.render(files[0], data); //layout.html
 
 			return callback(null, t2);
 		}).catch(function (reason) {
@@ -44,23 +55,24 @@
 
 
 	Template.prototype.init = function (filePath) {
-		this.liste.push(dirRoot + "/modules/core/public/view/layout.html");
+		console.log(this.layoutpath);
+		this.liste.push(this.layoutpath);
 		this.liste.push(filePath);
 	};
-
-	Template.prototype.init2 = function (liste) {
-		var i;
-		for (i in liste) {
-			if (liste.hasOwnProperty(i)) {
-				if (liste[i].toType() === "object") {
-					this.init(liste[i]);
-				} else {
-					this.bloc.push(this.loadFile(liste[i]));
+	/*
+		Template.prototype.init2 = function (liste) {
+			var i;
+			for (i in liste) {
+				if (liste.hasOwnProperty(i)) {
+					if (liste[i].toType() === "object") {
+						this.init(liste[i]);
+					} else {
+						this.bloc.push(this.loadFile(liste[i]));
+					}
 				}
 			}
-		}
-	};
-
+		};
+	*/
 	Template.prototype.loadFile = function (path) {
 		console.log("path: " + path);
 		return new rsvp.Promise(function (resolve, reject) {
@@ -68,7 +80,6 @@
 				if (error) {
 					reject(error);
 				}
-				//console.log(data);
 				resolve(data);
 			});
 		});

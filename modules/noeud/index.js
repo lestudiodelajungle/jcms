@@ -1,2 +1,3 @@
+/*jslint nomen: true, es5: true*/
 /*globals module, require*/
-exports.Route = require("./routes").Route;
+exports.Module = require("./routes").Route;

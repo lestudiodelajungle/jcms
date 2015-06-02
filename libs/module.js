@@ -1,4 +1,5 @@
-/*globals exports, require, dirRoot, console, RSVP, rsvp, fs, promises*/
+/*jslint nomen: true, es5: true*/
+/*globals exports, require, dirRoot, console, RSVP, rsvp, fs, promises, __dirname*/
 (function (exports) {
 	"use strict";
 	//module.exports.Route = require("./routes").Route;

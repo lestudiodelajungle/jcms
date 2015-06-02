@@ -5,7 +5,7 @@ a {
     color: #808080;
 }
 body {
-    /*background: url("/images/fond2.jpg") no-repeat fixed center center / cover rgba(0, 0, 0, 0);*/
+    background: url("/images/fond2.jpg") no-repeat fixed center center / cover rgba(0, 0, 0, 0);
     color: #FFFFFF;
     height: 100%;
     margin: 0;

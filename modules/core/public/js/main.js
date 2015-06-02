@@ -118,7 +118,7 @@
 	});
 
 	// on charge MVC
-	require(['nav', 'form', 'jQuery', 'ejs', 'localstorage', 'hulk', 'backbone-forms'], function () {
+	require(['nav', 'form', 'jQuery', 'ejs', 'localstorage', 'hulk', 'backbone-forms', 'bootstrap'], function () {
 
 	});
 }());
