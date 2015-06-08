@@ -1,5 +1,5 @@
 {
-  "name": "cms",
+  "name": "jcms",
   "version": "0.0.1",
   "description": "un cms utilisant node.js et mongoDB",
   "main": "Server.js",
