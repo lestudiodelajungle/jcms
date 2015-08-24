@@ -2,6 +2,7 @@
 /*globals module, require, console, dirRoot, exports, __dirname*/
 
 //module.exports.Route = require("./routes").Route;
+var Module = require(dirRoot + "/libs/module").Module;
 
 function Page(app) {
 	"use strict";
@@ -24,5 +25,7 @@ function Page(app) {
 
 	this.app.use('/page', router);
 }
+
+Page.prototype = Object.create(Module.prototype);
 
 exports.Module = Page;

@@ -14,17 +14,16 @@
 		},
 		listePage: function () {
 			// on charge les données
-			this.
 			// on charge le template
 			// on les assemble
 		},
-		modifierPage: function(){
+		modifierPage: function () {
 
 		},
-		creerPage: function(){
+		creerPage: function () {
 
 		},
-		supprimerPage: function(){
+		supprimerPage: function () {
 
 		}
 	});

@@ -9,4 +9,8 @@
 
 	};
 
+	App.prototype.chargerModule = function (nom) {
+		require(nom);
+	};
+
 }());

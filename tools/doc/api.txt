@@ -1,223 +1,228 @@
-/*------------------------------------ API JCMS ---------------------------------*/
+API JCMS
+====================================================================================
+============================== Liste des modules NPM ===============================
+====================================================================================
+tout ces modules sont utiliser par jcms et sont donc disponible via
+la fonction require. ex: var laVariable = require("nomDuModule");
 
-== COTE SERVEUR
-======================================
-	JCMS: variable principale de l'API
-	attribut:
-		// module NPM
-		ejs
-		url
-		http
-		fs 
+- backbone
+- backbone-orm
+- backbone-validation
+- bluebird
+- body-parser
+- bootstrap
+- bson
+- cluster
+- ejs
+- express
+- method-overdrive
+- mongoose
+- mongoose-gen
+- mysql
+- rsvp
+- socket.io
+- underscore
+
+====================================================================================
+=================================== Coté Serveur ===================================
+====================================================================================
+accecible via la variable $
+Classe Framework
+	Variable
+	   Module
+       Template
+       Modele
+       Controleur
+       Route
+	Fonction
+        
+Fin Classe
+====================================================================================
+Classe Serveur
+	Variable
+		CONFIG
+            		Objet: contient toute la config du site
 		express
-		bodyParser
-		methodOverride
-		
-		
-		CONFIG: config au format JSON de l'application
-		lesNoeuds: contient les nœuds de l'application
-
-		store: stockage mémoire
-		nom: nom de l'application
-		version: version de l'application
-	méthode:
-		init(): initialise les variable selon le config.json
-		start(): démarre le serveur
-		socket(): ouvre une connexion socket
-	FIN JCMS
-    
-Noeud
-    nom
-        chaine: nom du noeud
-    nomFormat
-        chaine: nom du noeud en minuscule
-    init
-        charge le mvc du noeud
-    unload
-        decharge le mvc du noeud en dé-écoutant les routes
-    reload
-        unload puis init le noeud
-    
-Database
-    connect
-        connection a la base de donnée
-    create
-        créer une nouvelle table
-    drop
-        supprime une table
-    insert
-        insert dans une table
-    selectWhere
-        selectionne plusieurs enregistrement dans une table
-    selectAll
-        selectionne tout les element d'une table
-    updateWhere
-        met a jour des elements d'une table
-    updateAll
-        met a jour tout les elements d'une table
-    deleteWhere
-        supprime des enregistrement d'une table
-    deleteAll
-        supprime tout les enregistrement d'une table
-    count
-        compte le nombre d'enregistrement d'une selection
-
-Modele
-    connect
-        connection a la base de donnée
-    create
-        créer une nouvelle table
-    drop
-        supprime une table
-    insert
-        insert dans une table
-    selectWhere
-        selectionne plusieurs enregistrement dans une table
-    selectAll
-        selectionne tout les element d'une table
-    updateWhere
-        met a jour des elements d'une table
-    updateAll
-        met a jour tout les elements d'une table
-    deleteWhere
-        supprime des enregistrement d'une table
-    deleteAll
-        supprime tout les enregistrement d'une table
-    count
-        compte le nombre d'enregistrement d'une selection
-    
-    
-Controleur
-    create
-        créer une nouvelle table
-    drop
-        supprime une table
-    insert
-        insert dans une table
-    selectWhere
-        selectionne plusieurs enregistrement dans une table
-    selectAll
-        selectionne tout les element d'une table
-    updateWhere
-        met a jour des elements d'une table
-    updateAll
-        met a jour tout les elements d'une table
-    deleteWhere
-        supprime des enregistrement d'une table
-    deleteAll
-        supprime tout les enregistrement d'une table
-    count
-        compte le nombre d'enregistrement d'une selection
-
-Route
-    app.get("unNoeud/:id?")
-    app.post("unNoeud/:id?")
-    app.put("unNoeud/:id?")
-    app.delete("unNoeud/:id?")
-        ecoute la route "unNoeud/:id?"
-    get
-        recupere une ou plusieurs ressources
-    post
-        créer une nouvelle ressource
-    put
-        modifie une ressource
-    delete
-        supprime une ressource
-
-== COTE CLIENT
-======================================
-	JCMS: variable principale de l'API
-	attribut:
-
-	methode:
-
-====================================================
-|----------------- LES ROUTES ---------------------|
-====================================================
-
-les routes sont composé a partir d'une méthode (get, post, put, delete) du nom du nœud et éventuellement d'un paramètre
-ex: http://monsite/page/accueil
-ici on demande un nœud page ayant le titre "accueil"
-
-on peut cumuler les couple nœud/id
-ex: http://monsite/page/nom/commentaire/1
-affichera la première page de commentaire pour la page "nom"
-
-les routes de base
-|-----------------------------------------------|
-|  TYPE  |    URL    | ACTION                   |
-|-----------------------------------------------|
-|  GET   | :id?      | affiche la page          |-\____ affiche seulement la page
-|  GET   | /         | affiche page d'accueil   |-/     mais renvoie pas de donné
-|  GET   | page/     | récupéré tte les pages   |
-|  GET   | page/:id? | récupéré la page         |
-|  POST  | page/     | créer une page           |
-|  PUT   | page/:id? | modifie une page         |
-| DELETE | page/:id? | supprime une page        |
-|-----------------------------------------------|
-
-*pour que chaque module puisse communiquer ensemble ils devront au minimum possédé ces méthodes
-//TODO: a voir si on sélectionne l'ID ou le TITRE
-
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-
-TODO
-les classe a faire
-classe tpl
-	classe qui génère les template peut importe le moteur (ejs, hbs, mustache)
-
-classe admin
-	middleware qui contrôle si l'action est autoriser par les droit du visiteur
-
-classe de mémoire cache
-	garderait en mémoire certaine donné qui serait souvent demander
+            		Objet: contient le module express
+		app
+            		objet: objet initialisé à partir d'express
+		bodyparser
+            		pour les formulaire
+		methodeoverdrive
+        
+		cluster
+            		module cluster
+		isMultiThread
+            		Boolean: si le serveur doit fonctionner sur plusieurs thread ou non
+		args
+            		contient les argument passer au lancement du script
+		core
+            		contient le module core
+		module
+            		contient les autres modules
+		info
+            		contient les info sur le serveur/site (ip, port, env)
+		about
+            		contient des info sur JCMS(nom, version, auteur)
+	Fonction
+		start
+            		demare le serveur
+		startWorker(idWorker)
+            		demare un nouveau worker
+Fin Classe
+=====================================================================================
+Classe Module
+	Variable
+        nom
+            chaine: nom du module
+        version
+            chaine: version du module
+	Fonction
+		addToPanelAdmin
+            ajoute un element dans le menu du panneau admin
+		removeToPanelAdmin
+            enleve l'element du menu correspondant au module
+		start
+            demarre le module
+		stop
+            arrete le module
+		restart
+            redemarre le module
+        install
+            execute des traitements au premier lancement du module
+        desinstall
+            execute des traitements pour supprimer tout ce qui a rapport avec le modi
+        initDatabase
+            initialise la base de donnée
+        initRoute
+            créer d'eventuelle route selon le schemma de modele (utile pour créer automatiquement les route pour les sous-modele)
+        new
+            créer une nouvelle entitée
+        get(id)
+            recupere une entitée
+        getAll
+            recupere toute les entitée
+        update(id, donnee)
+            met a jour une entitée
+        suppr(id)
+            supprime une entitée
+        
+Fin Classe
+=====================================================================================
+Classe Noeud
+	Variable
 	
+	Fonction
 
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-générateur de nœuds
-une classe qui permet de créer les script M, V et C d'un nœuds a partir d'un formulaire
-devra générer un script route.js, control.js, model.js, et au moins un template
-pour les 3 premiers il devra générer les méthodes suivante
-	- get nœud			récupère un nœud
-	- get nœud id		récupère le nœud de l'id correspondant
-	- get nœud where	récupère les nœuds correspondant a la clause where
-	- post nœud		créer une nouvelle entité de nœud
-	- put id			modifie le nœud "id"
-	- delete id			supprime le nœud "id"
+Fin Classe
+=====================================================================================
+Classe Page
+	Variable
 	
-pour les template, le développeur devra les écrire lui-même a partir d'un éditeur (intégré au cms ou pas), y'aura éventuellement quelque exemple
+	Fonction
+
+Fin Classe
+=====================================================================================
+Classe Template(filePath, option, callback)
+	Variable
+		rsvp
+		fs
+		ejs
+	Fonction
+		ajouterBloc(bloc)
+		generer
+		init(filePath)
+		loadFile(path)
+		supprimerBloc(id)
+Fin Classe
+=====================================================================================
+Classe Modele
+	Variable
 	
-classe gen
-privée
-	- modele
-	- 
-publique
-	+ gen_classe
+	Fonction
 
-fonctionnement
+Fin Classe
+=====================================================================================
+Classe Controleur
+	Variable
+	
+	Fonction
 
-- récupérer le nœud dans la base
+Fin Classe
+=====================================================================================
+Classe Route
+	Variable
+	
+	Fonction
+
+Fin Classe
+=====================================================================================
+FICHIER CONFIG.json
+{
+    "variable": "appli",
+    "titre": "the world online project",
+    "identifiant-site": "twop",
+    "admin": "nomAdmin",
+    "mdp_admin": "motDePasseAdmin",
+    "favicon": "public/favicon.ico",
+    "view_engine": "ejs",
+    "db": "mongodb",
+    "bdd": {
+        "mysql": {
+            "host": "addresseDuServeur.com",
+            "user": "nomUtilisateur",
+            "mdp": "motDePasse",
+            "database": "nomDeLaBase"
+        },
+        "mongodb": {
+            "host": "addresseDuServeur.com",
+            "database": "nomDeLaBase"
+        }
+    }
+}
+
+====================================================================================
+=================================== Coté Client ====================================
+====================================================================================
 
 
-/*------ BASE DE DONNEES -------*/
-base:
-    - site
-        page
-        commentaire
-    - cms
-        plugins
-        module
+
+====================================================================================
+=================================== API REST Ful ====================================
+====================================================================================
+module core
+GET     /core/restart                   redemare jcms
+GET     /core/info                      recupere les info sur l'appli et le serveur
+GET     /core/module                    liste des modules
+GET     /core/module/nom                recupere le schemma du module
 
 
+module noeud
+GET 	/noeud     	                    Liste les nœud chargé
+GET 	/noeud/id 	                    Afficher un nœud spécifique
+POST 	/noeud 	                        Créer un nouveau nœud à partir d’un modele/schemma
+PUT 	/noeud/id 	                    Modifie un nœud
+DELETE 	/noeud/id 	                    Supprime un nœud
 
-faut que route/page.js extand de 
+GET     /noeud/nom                      liste les entitées d'un noeud
+GET     /noeud/nom/id                   recupere une entitée d'un noeud
+POST    /noeud/nom                      ajoute une entitée à un noeud
+PUT     /noeud/nom/id                   modifie une entitée d'un noeud
+DELETE  /noeud/nom/id                   supprime une entitée d'un noeud
 
+/!\ en cas de sous-modele (ex: des commentaire pour un article)
 
+GET     /noeud/nom                      liste les entitées d'un noeud
+GET     /noeud/nom/nomDuChamp/id        recupere un sous-modele d'une entitée d'un noeud
+POST    /noeud/nom                      ajoute un sous-modele d'une entitée à un noeud
+PUT     /noeud/nom/nomDuChamp/id        modifie un sous-modele d'une entitée d'un noeud
+DELETE  /noeud/nom/nomDuChamp/id        supprime un sous-modele d'une entitée d'un noeud
 
-
-
+module page
+GET 	/page                           Liste les page chargé
+GET 	/page/id                        Afficher une page spécifique
+POST 	/page                           Créer une nouvelle page à partir de données
+PUT 	/page/id                        Modifie une page
+DELETE 	/page/id                        Supprime une page
 
 

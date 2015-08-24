@@ -2,9 +2,11 @@
 /*globals require, process, __dirname, code, GLOBAL, exports*/
 (function () {
 	"use strict";
+    var serveur,
+        config = require(__dirname + "/config/config.json"); // on charge la config
 
 	function Serveur() {
-		this.CONFIG = require(__dirname + "/config/config.json"); // on charge la config
+		this.CONFIG = config;
 		this.express = require('express');
 		this.app = this.express();
 		this.bodyParser = require('body-parser');
@@ -13,7 +15,11 @@
 
 		this.isMultiThread = false; // pour que l'appli soit multi-thread ou non
 
-		this.args = process.argv.slice(2);
+		this.args = process.argv.slice(2); // pour recuperer les arguments
+
+		/* le core est un module mais je le separe, mais ca peut changer et etre mis dans module */
+		this.core = {};
+		this.module = {};
 
 		this.info = {
 			"adresse": "",
@@ -44,18 +50,18 @@
 				}
 			} else { // pour chaque worker on execute le code si-dessous
 				idWorker = this.cluster.worker.id;
-				this.startServeur(idWorker);
+				this.startWorker(idWorker);
 			}
 		} else {
 
-			require("./modules/core/").Core(this.app);
-			this.startServeur();
+			require("./modules/core/").Core(this.app, this.module);
+			this.startWorker();
 
 		}
 
 	};
 
-	Serveur.prototype.startServeur = function (idWorker) {
+	Serveur.prototype.startWorker = function (idWorker) {
 		var server,
 			adresse = this.args[0] || "0.0.0.0",
 			port = this.args[1] || 3000,
@@ -86,27 +92,10 @@
 	/* definition des variable global*/
 	GLOBAL.dirRoot = __dirname;
 	GLOBAL.Promise = require("rsvp"); // pour la gestion des Promise qui n'est par encore implementé partout
-	var serveur = new Serveur();
-	GLOBAL.serveur = serveur;
+
+	serveur = GLOBAL[config.variable] = new Serveur();
 
 	/* demarrage de l'application*/
 	serveur.start();
 
 }());
-
-
-/*
-
-
-	<div class="conteiner-fluid">
-		<div class="row">
-		<% include block/header.html %>
-
-		<%- body %>
-
-		</div>
-	<% include block/footer.html %>
-		</div>
-
-
-*/
