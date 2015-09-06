@@ -4,23 +4,22 @@
 //module.exports.Route = require("./routes").Route;
 var Module = require(dirRoot + "/libs/module").Module;
 
-function Page(app) {
+function User(app) {
 	"use strict";
-    this.name = "page";
     Module.call(this);
 	this.app.set('views', __dirname + '/public/view/');
 	this.app.use(this.express.static(__dirname + '/public'));
 
-	this.router.get('/:id?', function (req, res) {
+	this.router.get('/user/:id?', function (req, res) {
 		console.log(req.params.id);
 		//res.render(req.param.id);
 		res.render(req.params.id);
 	});
 
-	this.app.use('/page', this.router);
+	this.app.use('/user', this.router);
 }
 
-Page.prototype = Object.create(Module.prototype);
-Page.prototype.constructor = Page;
+User.prototype = Object.create(Module.prototype);
+User.prototype.constructor = User;
 
-exports.Module = Page;
+exports.Module = User;

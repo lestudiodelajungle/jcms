@@ -94,6 +94,8 @@ Classe Module
             execute des traitements pour supprimer tout ce qui a rapport avec le modi
         initDatabase
             initialise la base de donnée
+        removeDatabase
+            supprime la table
         initRoute
             créer d'eventuelle route selon le schemma de modele (utile pour créer automatiquement les route pour les sous-modele)
         new
@@ -104,7 +106,7 @@ Classe Module
             recupere toute les entitée
         update(id, donnee)
             met a jour une entitée
-        suppr(id)
+        del(id)
             supprime une entitée
         
 Fin Classe
@@ -188,7 +190,7 @@ FICHIER CONFIG.json
 
 
 ====================================================================================
-=================================== API REST Ful ====================================
+=================================== API REST Ful ===================================
 ====================================================================================
 module core
 GET     /core/restart                   redemare jcms
@@ -224,5 +226,26 @@ GET 	/page/id                        Afficher une page spécifique
 POST 	/page                           Créer une nouvelle page à partir de données
 PUT 	/page/id                        Modifie une page
 DELETE 	/page/id                        Supprime une page
+
+
+====================================================================================
+============================= Framework (coté serveur) =============================
+====================================================================================
+$$, Framework : variable global contenent le framework
+
+Object // classe affectant les objet
+    toType
+        renvoie le type de l'objet
+Singleton // classe pour créer les singleton
+    create
+        sert à créer une classe singleton
+Promises // un Pollyfill pour les promises
+Modele // la classe modele
+Controleur // la classe controleur
+Module // la classe module
+
+
+
+
 
 

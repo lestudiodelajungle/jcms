@@ -9,6 +9,7 @@
         this.ejs = require("ejs");
         this.app.set('views', __dirname + '/public/view/'); // la ou sont les vues
         this.app.use(this.express.static(__dirname + '/public'));
+        this.bdd = ""; // nom du sgbd (mysql, mongodb, sqlite, etc)
 
         var i, nomPlugin,
             router = this.express.Router(),
@@ -59,8 +60,22 @@
 
     };
 
-    Module.prototype.initRoute = function () {
-
+    Module.prototype.initRoute = function (schemma) {
+        this.router.get('/' + this.nom, function (req, res) {
+            this.controleur.getAll();
+        });
+        this.router.get('/' + this.nom + "/:id", function (req, res) {
+            this.controleur.get(id);
+        });
+        this.router.post('/' + this.nom, function (req, res) {
+            this.controleur.new();
+        });
+        this.router.put('/' + this.nom + "/:id", function (req, res) {
+            this.controleur.edit();
+        });
+        this.router.delete('/' + this.nom + "/:id", function (req, res) {
+            this.controleur.suppr();
+        });
     };
 
     Module.prototype.new = function (data) {

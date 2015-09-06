@@ -1,12 +1,10 @@
-(function(){
+(function () {
+    "use strict";
+    var Singleton = new require('./Framework').Framework().Singleton;
 
-        var old = console.log;
+   // var sin = fr.Singleton
+    console.log(fr);
 
-        console.log = function(){
-            Array.prototype.unshift.call(arguments, 'Report: ');
-            old.apply(this, arguments)
-        }
 
-})();
 
-console.log('test')
+}());
