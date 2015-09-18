@@ -1,13 +1,13 @@
 {
     "var": "appli",
-    "titre": "the world online project",
-    "identifiant-site": "twop",
+    "name": "the world online project",
+    "id": "twop",
     "admin": "sev794",
-    "mdp_admin": "1598753",
+    "password": "1598753",
     "favicon": "public/favicon.ico",
     "view_engine": "ejs",
-    "db": "mongodb",
-    "bdd": {
+    "database_engine": "mongodb",
+    "database_config": {
         "mysql": {
             "host": "127.0.0.1",
             "user": "root",

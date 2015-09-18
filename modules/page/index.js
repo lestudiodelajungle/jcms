@@ -2,12 +2,12 @@
 /*globals module, require, console, dirRoot, exports, __dirname*/
 
 //module.exports.Route = require("./routes").Route;
-var Module = require(dirRoot + "/libs/module").Module;
+var Module = require(GLOBAL.dirRoot + "/libs/module").Module;
 
 function Page(app) {
 	"use strict";
     this.name = "page";
-    Module.call(this);
+    Module.call(this, app);
 	this.app.set('views', __dirname + '/public/view/');
 	this.app.use(this.express.static(__dirname + '/public'));
 

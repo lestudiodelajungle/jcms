@@ -22,7 +22,7 @@
 (function (exports) {
 	"use strict";
 
-	function Route() {
+	function Router() {
 		this.test = "jcms";
 	}
 
@@ -30,7 +30,7 @@
 	 * arrete l'ecoute des routes
 	 */
 
-	Route.prototype.allStop = function () {
+	Router.prototype.stopAll = function () {
 		this.app.route(this.url)
 			.all(null)
 			.get(null)
@@ -48,6 +48,6 @@
 
 
 
-	exports.Route = Route;
+	exports.Router = Router;
 
 }(exports));

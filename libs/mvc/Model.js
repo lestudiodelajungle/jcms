@@ -9,7 +9,7 @@ var _ = require("underscore");
 var Modele = Backbone.Model.extend({
 	urlRoot: 'mongodb://localhost:27017/',
 	schema: {},
-	nom: "",
+	name: "",
 	initialize: function (nom) {
 		"use strict";
 		// valorise le schema

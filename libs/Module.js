@@ -13,7 +13,7 @@
 
         var i, nomPlugin,
             router = this.express.Router(),
-            tpl = require(dirRoot + "/libs/mvc/template").Template;
+            tpl = require(dirRoot + "/libs/mvc/Template").Template;
 
 
 
@@ -28,7 +28,7 @@
         this.initDatabase();
     };
 
-    Module.prototype.desinstall = function (id) {
+    Module.prototype.uninstall = function (id) {
         this.removeDatabase();
     };
 

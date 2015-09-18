@@ -53,6 +53,9 @@
         toType: function () {
             return ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
         },
+        app: function () {
+            return require("../Server.js").Server;
+        },
         Singleton: {
             create: function (Constructor) {
                 var _instance;
@@ -87,6 +90,4 @@
             console.log(msg);
         },
     });
-
-
-})(GLOBAL);
+exports = module.exports =

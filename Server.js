@@ -57,7 +57,11 @@
             }
         } else {
 
-            require("./modules/core/").Core(this.app);
+            this.core = require("./modules/core/").Core;
+            this.core = new this.core(this.app);
+            this.core.configure();
+            this.core.loadRoute();
+            this.core.loadModules();
             this.startWorker();
 
         }

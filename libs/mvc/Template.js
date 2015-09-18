@@ -12,25 +12,25 @@
 	 * constructeur
 	 */
 	function Template(filePath, options, callback) {
-		this.liste = []; //require(dirRoot + "/config/template.json"); // liste des bloc
-		this.bloc = []; // liste les contenu des bloc
+		this.list = []; //require(dirRoot + "/config/template.json"); // liste des bloc
+		this.block = []; // liste les contenu des bloc
 		this.html = ""; // le rendu final
 
 
 		var promises,
-			layoutpath,
+			layoutPath,
 			data = options,
 			t2 = "tututut";
-		this.layoutpath = dirRoot + '/modules/core/public/view/layout.html';
+		this.layoutPath = dirRoot + '/modules/core/public/view/layout.html';
 
 
 		if (options.admin && options.admin === true) {
 
-			this.layoutpath = dirRoot + '/modules/core/admin/view/layout.html';
+			this.layoutPath = dirRoot + '/modules/core/admin/view/layout.html';
 		}
 		this.init(filePath);
-		layoutpath = this.layoutpath;
-		console.log("toto+ " + this.layoutpath);
+		layoutPath = this.layoutPath;
+		console.log("toto+ " + this.layoutPath);
 		promises = this.liste.map(this.loadFile);
 		rsvp.all(promises).then(function (files) {
 			// proceed - files is array of your files in the order specified above.
@@ -38,7 +38,7 @@
 			var t1 = ejs.render(files[1]); //la vue
 			data = {
 				body: t1,
-				filename: layoutpath
+				filename: layoutPath
 			};
 
 			t2 = ejs.render(files[0], data); //layout.html
@@ -55,8 +55,8 @@
 
 
 	Template.prototype.init = function (filePath) {
-		console.log(this.layoutpath);
-		this.liste.push(this.layoutpath);
+		console.log(this.layoutPath);
+		this.liste.push(this.layoutPath);
 		this.liste.push(filePath);
 	};
 	/*
@@ -90,7 +90,7 @@
 	 * @param {Number} ordre place à laquelle ont doit placer le nouveau bloc
 	 * @param {String} bloc  bloc de texte ou le nom du fichier
 	 */
-	Template.prototype.ajouterBloc = function (bloc) {
+	Template.prototype.addBlock = function (bloc) {
 
 	};
 
@@ -98,7 +98,7 @@
 	 * supprimer un bloc de la liste
 	 * @param {Number} id numero du ploc à supprimer
 	 */
-	Template.prototype.supprimerBloc = function (id) {
+	Template.prototype.delBloc = function (id) {
 
 	};
 
@@ -106,7 +106,7 @@
 	 * genere le template a partir du tableau de bloc
 	 * @returns {String} html de la page
 	 */
-	Template.prototype.generer = function () {
+	Template.prototype.generate = function () {
 
 		return this.html;
 	};
