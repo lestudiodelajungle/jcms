@@ -7,7 +7,11 @@
     "ejs": "^1.0.0",
     "bootstrap": "^3.3.0",
     "express": "^4.10.1",
-    "socket.io": "^1.2.0"
+    "socket.io": "^1.2.0",
+    "body-parser": "latest",
+    "method-override": "latest",
+    "jcms-framework": "latest",
+    "rsvp": "latest"
   },
   "devDependencies": {},
   "scripts": {

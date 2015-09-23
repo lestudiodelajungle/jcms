@@ -13,7 +13,7 @@
 		this.app.use('/noeud', this.router);
 	}
 
-	Route.prototype = require(dirRoot + "/libs/mvc/route").Route.prototype; // herite de la classe Route du framework //
+	Route.prototype = require(dirRoot + "/libs/mvc/Router").Route.prototype; // herite de la classe Route du framework //
 
 	exports.Route = Route;
 }(exports));

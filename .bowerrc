@@ -1,3 +1,4 @@
 {
-  "directory": "inc/"
+  "directory": "js/libs",
+  "json": "bower.json"
 }

@@ -1,6 +1,6 @@
 /*jslint nomen: true, devel: true */
 /*globals require, process, __dirname, code, GLOBAL, exports*/
-(function () {
+(function (exports, global) {
     "use strict";
     var server,
         config = require(__dirname + "/config/config.json"); // on charge la config
@@ -58,11 +58,10 @@
         } else {
 
             this.core = require("./modules/core/").Core;
-            this.core = new this.core(this.app);
-            this.core.configure();
-            this.core.loadRoute();
+            this.core = new this.core(this.app, this.express.Router());
+            this.core.start(); // fonctionne comme un module
             this.core.loadModules();
-            this.startWorker();
+            this.startWorker(idWorker);
 
         }
 
@@ -91,7 +90,7 @@
     exports.Server = Server;
 
     /* definition des variable global*/
-    server = GLOBAL[config.var] = new Server();
+    server = global.server = new Server();
     /* demarrage de l'application*/
     server.start();
-}(exports));
+}(exports, global));

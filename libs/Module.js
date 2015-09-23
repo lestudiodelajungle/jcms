@@ -3,25 +3,26 @@
 (function (exports) {
     "use strict";
     //module.exports.Route = require("./routes").Route;
-    function Module(app) {
+    var $$ = require("jcms-framework");
+    function Module(app, router) {
         this.express = require('express');
         this.app = app;
         this.ejs = require("ejs");
         this.app.set('views', __dirname + '/public/view/'); // la ou sont les vues
         this.app.use(this.express.static(__dirname + '/public'));
         this.bdd = ""; // nom du sgbd (mysql, mongodb, sqlite, etc)
+        this.router = router || this.express.Router();
 
         var i, nomPlugin,
-            router = this.express.Router(),
             tpl = require(dirRoot + "/libs/mvc/Template").Template;
 
 
 
-        router.get('/:id?', function (req, res) {
-            res.render(req.param.id);
-        });
+        //        this.router.get('/:id?', function (req, res) {
+        //            res.render(req.param.id);
+        //        });
 
-        this.app.use('/page', router);
+
     }
 
     Module.prototype.install = function (id) {
@@ -33,7 +34,15 @@
     };
 
     Module.prototype.start = function () {
-        this.initRoute();
+        if ($$.exist(this.configure)) {
+            this.configure();
+        }
+        if ($$.exist(this.loadRoute)) {
+            this.loadRoute();
+        }
+        if ($$.exist(this.initRoute)) {
+            this.initRoute();
+        }
     };
 
     Module.prototype.stop = function () {
@@ -76,6 +85,8 @@
         this.router.delete('/' + this.nom + "/:id", function (req, res) {
             this.controleur.suppr();
         });
+
+        this.app.use('/page', this.router);
     };
 
     Module.prototype.new = function (data) {

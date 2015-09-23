@@ -4,14 +4,12 @@
     var Module = require(GLOBAL.dirRoot + "/libs/Module").Module,
         express = require('express');
     //module.exports.Route = require("./routes").Route;
-    function Core(app) {
+    function Core(app, router) {
         "use strict";
         this.name = "core";
-        Module.call(this, app);
+        Module.call(this, app, router);
         this.Tpl = require(dirRoot + "/libs/mvc/Template").Template;
-
         this.express = require('express');
-        this.router = this.express.Router();
         this.app = app;
 
         this.pluginsList = require(dirRoot + "/config/plugins.json"); // liste des module (module)
@@ -54,7 +52,7 @@
                 pluginName = this.pluginsList[i];
                 console.log(dirRoot + "/modules/" + pluginName + "/");
                 Module = require(dirRoot + "/modules/" + pluginName + "/").Module;
-                this.modules[pluginName] = new Module(this.app);
+                this.modules[pluginName] = new Module(this.app, this.router);
                 this.modules[pluginName].start();
             }
         }

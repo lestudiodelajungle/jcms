@@ -28,7 +28,7 @@ Framework.core = Framework.prototype = {
 };
 
 Framework.core.init.prototype = Framework.core;
-$$ = global.Framework = global.$$ = Framework;
+//$$ = global.Framework = global.$$ = Framework;
 
 Framework.extend = Framework.core.extend = function () {
     "use strict";
