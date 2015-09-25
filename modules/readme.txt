@@ -9,3 +9,6 @@ modules:
 	il gere les noeuds
 - page
 	il gere les pages
+    
+au final ces modules deviendront des module npm et seront installable via npm install
+les mise a jour seront ainsi plus facile a faire

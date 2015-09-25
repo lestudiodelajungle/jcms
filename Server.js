@@ -1,12 +1,13 @@
 /*jslint nomen: true, devel: true */
-/*globals require, process, __dirname, code, GLOBAL, exports*/
+/*globals require, process, __dirname, code, global, exports*/
 (function (exports, global) {
     "use strict";
     var server,
+        $$ = require('jcms-framework'),
         config = require(__dirname + "/config/config.json"); // on charge la config
 
     function Server() {
-        GLOBAL.dirRoot = __dirname;
+        global.dirRoot = __dirname;
         this.CONFIG = config;
         this.express = require('express');
         this.app = this.express();
@@ -41,6 +42,12 @@
         var i, cpuCount, idWorker,
             name = this.about.name;
 
+        console.log("==================================================================== \n" +
+            " \n" +
+            " Bienvenue sur jcms !! \n" +
+            " \n" +
+            "====================================================================");
+
         if (this.isMultiThread === true) {
             // gestion du multi-threading
             if (this.cluster.isMaster) {
@@ -60,8 +67,9 @@
             this.core = require("./modules/core/").Core;
             this.core = new this.core(this.app, this.express.Router());
             this.core.start(); // fonctionne comme un module
-            this.core.loadModules();
             this.startWorker(idWorker);
+            this.core.loadModules();
+
 
         }
 

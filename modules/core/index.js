@@ -1,14 +1,13 @@
 /*jslint nomen: true, es5: true*/
 /*globals module, require, console, dirRoot, __dirname, exports*/
 (function (exports) {
-    var Module = require(GLOBAL.dirRoot + "/libs/Module").Module,
+        var $$ = require("jcms-framework");
         express = require('express');
     //module.exports.Route = require("./routes").Route;
     function Core(app, router) {
         "use strict";
         this.name = "core";
-        Module.call(this, app, router);
-        this.Tpl = require(dirRoot + "/libs/mvc/Template").Template;
+        $$.Module.call(this, app, router);
         this.express = require('express');
         this.app = app;
 
@@ -19,14 +18,14 @@
         //this.loadRoute();
         //this.loadModules();
     }
-    Core.prototype = Object.create(Module.prototype);
+    Core.prototype = Object.create($$.Module.prototype);
     Core.prototype.constructor = Core;
     Core.prototype.configure = function () {
         "use strict";
         // this.register('.html', require('ejs'));
         //this.app.engine('html', this.tpl);
         this.app.engine('html', function (filePath, options, callback) {
-            return new this.Tpl(filePath, options, callback);
+            return new $$.Template(filePath, options, callback);
         });
         this.app.set('views', __dirname + '/public/view/'); // la ou sont les vues
         this.app.set('view engine', 'html'); // On utilise le moteur de template "EJS"
@@ -45,15 +44,16 @@
     Core.prototype.loadModules = function () {
         "use strict";
         var i, pluginName, Module;
-        console.log("--- INFO: nombre \n de plugins : " + this.pluginsList.length);
+        console.log("nombre de plugins : " + this.pluginsList.length);
         /* =============== on charge les plugins =============== */
         if (this.pluginsList.length > 0) {
             for (i = 0; i < this.pluginsList.length; i += 1) {
                 pluginName = this.pluginsList[i];
-                console.log(dirRoot + "/modules/" + pluginName + "/");
+
                 Module = require(dirRoot + "/modules/" + pluginName + "/").Module;
                 this.modules[pluginName] = new Module(this.app, this.router);
                 this.modules[pluginName].start();
+                console.log("modules " + pluginName + " : ok");
             }
         }
     };
