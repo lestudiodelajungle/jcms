@@ -1,33 +1,35 @@
 {
-    "name": "jcms",
-    "version": "0.0.1",
-    "description": "un cms utilisant node.js et mongoDB",
-    "main": "Server.js",
-    "dependencies": {
-        "ejs": "^1.0.0",
-        "mongoose": "latest",
-        "bootstrap": "^3.3.0",
-        "express": "^4.10.1",
-        "socket.io": "^1.2.0",
-        "body-parser": "latest",
-        "method-override": "latest",
-        "jcms-framework": "latest",
-        "rsvp": "latest"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-    "keywords": [
+  "name": "jcms",
+  "version": "0.0.1",
+  "description": "un cms utilisant node.js et mongoDB",
+  "main": "Server.js",
+  "dependencies": {
+    "amdefine": "^1.0.0",
+    "backbone-schema": "latest",
+    "body-parser": "latest",
+    "bootstrap": "^3.3.0",
+    "ejs": "^1.0.0",
+    "express": "^4.10.1",
+    "jcms-framework": "latest",
+    "method-override": "latest",
+    "mongoose": "latest",
+    "rsvp": "latest",
+    "socket.io": "^1.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
     "cms",
     "node.js",
     "mongoDB",
     "javascript"
   ],
-    "author": "severin",
-    "license": "libre"
+  "author": "severin",
+  "license": "libre"
 }

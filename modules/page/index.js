@@ -11,7 +11,7 @@ function Page(app, router) {
 	this.app.set('views', __dirname + '/public/view/');
 	this.app.use(this.express.static(__dirname + '/public'));
 
-    this.controller = new require("./controller").Page();
+    this.controller = require("./controller");
 
 	router.get('/:id?', function (req, res) {
 		console.log(req.params.id);

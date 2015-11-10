@@ -1,37 +1,25 @@
-// route du module core
-/*globals require, GLOBAL, exports*/
-(function (exports) {
+// module controller page
+/*globals require, global, module, define, console*/
+(function (global, module, require, undefined) {
     "use strict";
 
-    function Page() {
-        this.mongoose = require('mongoose');
-        this.model = this.mongoose.model('Page');
+    //    if (typeof define !== 'function') {
+    //        var define = require('amdefine')(module);
+    //    }
 
+    var Backbone = require('backbone'),
+        Model = require('./model')(),
+        rsvp = require('rsvp'),
+        _ = require('underscore'),
+        Page = require("jcms-framework").Controller;
+
+    console.log("test = " + module);
+
+    Page = _.extend(Backbone.Collection.extend({
+        model: Model
+    }), Page);
+
+    if (typeof module !== "undefined" && module.exports) {
+        module.exports = Page;
     }
-
-    Page.prototype.display = function () {
-
-    };
-
-    Page.prototype.new = function () {
-
-    };
-
-    Page.prototype.modify = function () {
-
-    };
-
-    Page.prototype.update = function () {
-
-    };
-
-    Page.prototype.delete = function () {
-
-    };
-
-    Page.prototype.create = function () {
-
-    };
-
-    exports.Page = Page;
-}(exports));
+}((global || window), (module || "undefined"), (require || "undefined")));
