@@ -1,104 +1,231 @@
+/////////////////////////////// v2 /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+// twop: the world online project
+// réalisé par: séverin parthenay
+// version: developpement
+/////////////////////////////////////////////////////////////////////////
 /*jslint nomen: true, devel: true */
-/*globals require, process, __dirname, code, global, exports*/
-(function (exports, global) {
+/*globals require, process, __dirname, code*/
+
+function Serveur() {
     "use strict";
-    var server,
-        $$ = require('jcms-framework'),
-        config = require(__dirname + "/config/config.json"); // on charge la config
+    /*globals require*/
+    this.ejs = require('ejs');
+    // engine = require('ejs-locals'),
+    this.url = require("url");
+    this.http = require('http');
+    this.fs = require("fs"); // acces aux fichier
+    //sio = require('socket.io-sessions'), // session par socket
+    this.express = require('express');
+    //this.bodyParser = require('body-parser'),
+    //this.methodOverride = require('method-override'),
+    this.CONFIG = require(__dirname + "/config/config.json"); // on charge la config
+    this.Noeud = require(__dirname + "/serveur/classe/Noeud");
+    this.lesNoeuds = {};
+    //stockage local
+    this.store = {};
+    this.s = this.store;
+}
 
-    function Server() {
-        global.dirRoot = __dirname;
-        this.CONFIG = config;
-        this.express = require('express');
-        this.app = this.express();
-        this.bodyParser = require('body-parser');
-        this.methodOverride = require('method-override');
-        this.cluster = require('cluster');
+// initialise les variable et la config du serveur
+Serveur.prototype.init = function () {
+    "use strict";
+    var i, unNoeud;
+    this.app = this.express();
+    this.configure();
+    this.noeuds = require(__dirname + "/config/noeuds.json");
 
-        this.isMultiThread = false; // pour que l'appli soit multi-thread ou non
+    //this.test2(); /// TEST
 
-        this.args = process.argv.slice(2); // pour recuperer les arguments
-
-        /* le core est un module mais je le separe, mais ca peut changer et etre mis dans module */
-        //this.core = {};
-        //this.module = {};
-
-
+    //integre tout les script de rootage
+    for (i in this.noeuds) {
+        if (this.noeuds.hasOwnProperty(i)) {
+            this.lesNoeuds[i] = new this.Noeud(this.noeuds[i], this.app);
+        }
     }
 
-    Server.prototype.info = {
-        "address": "",
-        "port": "",
-        "env": ""
-    };
+    this.start();
+};
 
-    Server.prototype.about = {
-        "name": "jcms",
-        "version": "beta 0.1",
-        "author": "severin"
-    };
+//////////////////////////////// Configuration du serveur //////////////////////////////////
+Serveur.prototype.configure = function () {
+    "use strict";
+    // this.register('.html', require('ejs'));
 
-    Server.prototype.start = function () {
-        var i, cpuCount, idWorker,
-            name = this.about.name;
+    this.app.engine('html', this.ejs.__express);
+    this.app.set('views', __dirname + '/www/view'); // la ou sont les vues
+    this.app.use(this.express.static(__dirname + '/www'));
+    // this.app.set('view engine', 'html');
+    // this.app.engine('html', this.ejs.renderFile);
 
-        console.log("==================================================================== \n" +
-            " \n" +
-            " Bienvenue sur jcms !! \n" +
-            " \n" +
-            "====================================================================");
+    this.app.set('view engine', 'html'); // On utilise le moteur de template "EJS"
+    this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
+        layout: "/home/severin/web/cms/www/view/layout.ejs"
+            //page: 'truc',
+            //title: 'twop'
+    }); // Dans tous nos templates
+    // this.use(express.multipart({ uploadDir= "public" }));
+    //this.app.use(this.bodyParser()); // parser les valeur de formulaire
+    //app.use(express.favicon(__dirname + '/www/public/images/favicon.ico')); // le favicon
+    //app.use(express.methodOverride());
+    //app.use(app.router);
+};
 
-        if (this.isMultiThread === true) {
-            // gestion du multi-threading
-            if (this.cluster.isMaster) {
-                console.log("Démarage de l'application : " + name);
+///////////// demarage du serveur /////////
+Serveur.prototype.start = function () {
+    "use strict";
+    var server = this.app.listen(3000, '0.0.0.0', function () {
+        console.log("Serveur express démarré à l'adresse %s sur le port %d", server.address().address, server.address().port);
+    });
+    this.server = server;
+};
 
-                cpuCount = require('os').cpus().length; // on compte le nb de cpu disponible
-                // on créer un worker pour chaque cpu
-                for (i = 0; i < cpuCount; i += 1) {
-                    this.cluster.fork();
-                }
-            } else { // pour chaque worker on execute le code si-dessous
-                idWorker = this.cluster.worker.id;
-                this.startWorker(idWorker);
-            }
-        } else {
-
-            this.core = require("./modules/core/").Core;
-            this.core = new this.core(this.app, this.express.Router());
-            this.core.start(); // fonctionne comme un module
-            this.startWorker(idWorker);
-            this.core.loadModules();
+Serveur.prototype.socket = function () {
+    "use strict";
+    this.io = require('socket.io').listen(this.server);
+    this.io.sockets.on('connection', function () { /*parametre: socket*/
+        console.log("test");
+    });
+};
 
 
+
+Serveur.prototype.module_exist = function (name) {
+    "use strict";
+    try {
+        require(name);
+    } catch (err) {
+        if (err.code === 'MODULE_NOT_FOUND') {
+            return false;
         }
+    }
 
-    };
+    return true;
+};
 
-    Server.prototype.startWorker = function (idWorker) {
-        var server,
-            address = this.args[0] || "0.0.0.0",
-            port = this.args[1] || 3000,
-            info = this.info,
-            name = this.about.name;
+Serveur.prototype.test = function () {
+    "use strict";
+    var mongoose = require('mongoose');
 
-        server = this.app.listen(port, address, function () {
-            var msg = idWorker ? "Cluster " + idWorker + " démarré à l'adresse %s:%d" : "serveur " + name + " démarré à l'adresse %s:%d";
-            console.log(msg,
-                server.address().address,
-                server.address().port);
-            info = {
-                "address": server.address().address,
-                "port": server.address().port
-                    //		"env": ""
-            };
-        });
-    };
+    mongoose.connect('mongodb://localhost/site', function (err) {
+        if (err) {
+            throw err;
+        }
+    });
 
-    exports.Server = Server;
+    var schemma = new mongoose.Schema({
+        "meta": {
+            "charset": String,
+            "description": String,
+            "title": String,
+            "favicon": String,
+            "meta_key": Array
+        },
+        "template": {
+            "layout": String,
+            "head": String,
+            "header": String,
+            "body": String,
+            "footer": String
+        },
+        "css": Array,
+        "javascript": Array
+    });
 
-    /* definition des variable global*/
-    server = global.server = new Server();
-    /* demarrage de l'application*/
-    server.start();
-}(exports, global));
+    var modele = mongoose.model('page', schemma);
+
+
+    // On crée une instance du Model
+    var monCommentaire = new modele({
+        "meta": {
+            "charset": "utf-8",
+            "description": "un projet de jeux en ligne (massivement) multijoueur avec un editeur de carte et de skin",
+            "title": "world online project",
+            "favicon": "image/favicon.ico"
+        },
+        "template": {
+            "layout": "layout",
+            "head": "head",
+            "header": "header",
+            "body": "accueil",
+            "footer": "footer"
+        },
+        "css": [
+            "theme_twop"
+        ],
+        "javascript": [
+            "ejs",
+            "backbone-localstore",
+            "socket.io",
+            "jquery",
+            "undescore",
+            "backbone",
+            "model",
+            "route",
+            "view",
+            "script"
+        ]
+    });
+
+    // On le sauvegarde dans MongoDB !
+    monCommentaire.save(function (err) {
+        if (err) {
+            throw err;
+        }
+        console.log('Commentaire ajouté avec succès !');
+        // On se déconnecte de MongoDB maintenant
+    });
+
+    var query = modele.find(null);
+    // peut s'écrire aussi query.where('pseudo', 'Atinux').limit(3);
+    query.exec(function (err, comms) {
+        if (err) {
+            throw err;
+        }
+        // On va parcourir le résultat et les afficher joliment
+        console.log(comms);
+    });
+
+    //    var rtest = require(global.dirRoot + "/serveur/database/mongodb");
+    //    var test = new rtest.MongoDB("site");
+    //    test.connect();
+    //    test.new("page", schemma);
+    //    test.getAll()
+    //    var truc = test.db;
+    console.log("test444 : ");
+    //test.db = "tesst";
+};
+
+Serveur.prototype.test2 = function () {
+    "use strict";
+    var mongoose = require('mongoose');
+
+    var schemma = new mongoose.Schema({
+        "meta": {
+            "charset": String,
+            "description": String,
+            "title": String,
+            "favicon": String,
+            "meta_key": Array
+        },
+        "template": {
+            "layout": String,
+            "head": String,
+            "header": String,
+            "body": String,
+            "footer": String
+        },
+        "css": Array,
+        "javascript": Array
+    });
+
+    var rtest = require(global.dirRoot + "/serveur/database/mongodb");
+    var test = new rtest.MongoDB("site");
+    test.connect();
+    test.new("page", schemma);
+    test.getAll();
+};
+
+GLOBAL.dirRoot = __dirname;
+GLOBAL.serveur = serveur = new Serveur();
+serveur.init();
