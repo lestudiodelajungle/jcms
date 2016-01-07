@@ -1,0 +1,11 @@
+{
+    "nom": "string",
+    "prenom": "string",
+    "mail": "string",
+    "pseudo": "string",
+    "pwd": "string",
+    "site": "string",
+    "gravatar": "string",
+    "facebook": "string",
+    "twitter": "string"
+}

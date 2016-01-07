@@ -1,0 +1,16 @@
+{
+    route: {
+        [{
+            method: "",
+            route: "",
+            call: ""
+        }]
+    },
+    rest: {
+        [{
+            method: "",
+            method: "",
+            call: ""
+        }]
+    }
+}

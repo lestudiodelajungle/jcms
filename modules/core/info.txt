@@ -1,0 +1,9 @@
+pour integrer plus des fichier en plus de index.js il suffit d'importer les autre dans celui-ci.
+
+
+module indispansable !!
+
+sert a envoyer le html du cms
+------------------------------------------------------------------------------
+fourni les reponse 404 etc
+		le panneau admin

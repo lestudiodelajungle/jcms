@@ -1,0 +1,22 @@
+{
+	"name": "jcms",
+	"version": "0.0.1",
+	"homepage": "",
+	"authors": [
+    "Séverin PARTHENAY"
+  ],
+	"description": "un cms utilisant node.js et mongoDB",
+	"keywords": [
+    "cms", "nodejs", "mongodb", "expressjs"
+  ],
+	"license": "libre",
+	"dependencies": {
+		"jquery": "latest"
+	},
+	"ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "README.md"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "/",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "id": "meta",
+            "type": "object",
+            "properties": {
+                "charset": {
+                    "id": "charset",
+                    "type": "string"
+                },
+                "description": {
+                    "id": "description",
+                    "type": "string"
+                },
+                "title": {
+                    "id": "title",
+                    "type": "string"
+                },
+                "favicon": {
+                    "id": "favicon",
+                    "type": "string"
+                }
+            }
+        },
+        "template": {
+            "id": "template",
+            "type": "object",
+            "properties": {
+                "layout": {
+                    "id": "layout",
+                    "type": "string"
+                },
+                "head": {
+                    "id": "head",
+                    "type": "string"
+                },
+                "header": {
+                    "id": "header",
+                    "type": "string"
+                },
+                "body": {
+                    "id": "body",
+                    "type": "string"
+                },
+                "footer": {
+                    "id": "footer",
+                    "type": "string"
+                }
+            }
+        },
+        "css": {
+            "id": "css",
+            "type": "array",
+            "items": {
+                "id": "0",
+                "type": "string"
+            }
+        },
+        "javascript": {
+            "id": "javascript",
+            "type": "array",
+            "items": [
+                {
+                    "id": "0",
+                    "type": "string"
+        },
+                {
+                    "id": "1",
+                    "type": "string"
+        },
+                {
+                    "id": "2",
+                    "type": "string"
+        },
+                {
+                    "id": "3",
+                    "type": "string"
+        },
+                {
+                    "id": "4",
+                    "type": "string"
+        },
+                {
+                    "id": "5",
+                    "type": "string"
+        },
+                {
+                    "id": "6",
+                    "type": "string"
+        },
+                {
+                    "id": "7",
+                    "type": "string"
+        },
+                {
+                    "id": "8",
+                    "type": "string"
+        },
+                {
+                    "id": "9",
+                    "type": "string"
+        }
+      ]
+        }
+    }
+}

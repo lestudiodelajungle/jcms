@@ -1,17 +1,18 @@
 {
-  "restartable": "rs",
-  "ignore": [
+    "restartable": "rs",
+    "ignore": [
     ".git",
     "www/Data/",
     "www/images/",
     "node_modules/"
   ],
-  "verbose": true,
-  "execMap": {
-    "js": "node --harmony"
-  },
-  "env": {
-    "NODE_ENV": "development"
-  },
-  "ext": "js json"
+    "watch": ["node_modules/jcms-framework/", "./"],
+    "verbose": true,
+    "execMap": {
+        "js": "node --harmony"
+    },
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "ext": "js json"
 }
