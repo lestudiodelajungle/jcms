@@ -1,0 +1,24 @@
+pour integrer plus des fichier en plus de index.js il suffit d'importer les autre dans celui-ci.
+
+
+module indispansable !!
+
+sert a envoyer le html du cms
+
+routes :
+    -> domain.ltd/api/moduleName/nodeName/id || action
+    exemple : monDomaine.com/api/node/article/5
+    
+    
+    method   |   url               |    desc      |
+     get        nodes/               liste all
+     get        nodes/id             get one
+     post       nodes/               add new
+     put        nodes/               update
+     delete     nodes/               delete
+     
+     get        nodes/article        liste all
+     get        nodes/article/id     get one
+     post       nodes/article        add new
+     put        nodes/article/       update
+     delete     nodes/article/id     delete  

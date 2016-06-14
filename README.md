@@ -22,13 +22,17 @@ jcms est une compilation de couche logiciel et de norme deja existante, le but e
 Language: JavaScript (ES6)
 
 Serveur: Node.js ou io.js
+
 Base de donnée: MongoDB
+
 Schemma des modèles: schema JSON (standard)
+
 MVC coté serveur: express.js
 
 Socket: //todo
 
 MVC coté client: Backbone
+
 Gestion DOM: Zepto.js (ou jQuery)
 
 
@@ -59,8 +63,11 @@ Prérequis: docker
 ### Log
 Plusieurs niveau de log sont disponible:
 
-warn: affiche seulement les erreurs
-debug: affiche seulement les infos de debugage
-info: affiche seulement les infos/events du serveur
+error: 0, affiche les erreur qui empeche le code de fonctionner normalement
+warn: 1, affiche les erreur qui n'empeche pas le code de continué
+info: 2, affiche les message d'info concernant les script
+verbose: 3, affiche les message inutiles
+debug: 4, affiche les message concernant un debugage ponctuel
+silly: 5, affiche les message encore plus inutiles que verbose
 
 Les logs sont affiché dans la console qui lance le serveur et sont enregister dans un fichier log spécifique (definit dans un fichier config)

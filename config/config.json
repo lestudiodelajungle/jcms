@@ -9,7 +9,7 @@
     "database_engine": "mongodb",
     "mode": "debug",
     "logdir": "/tools/log/",
-    "database_config": {
+    "database": {
         "mysql": {
             "host": "127.0.0.1",
             "user": "root",
@@ -17,6 +17,7 @@
             "database": "test"
         },
         "mongodb": {
+            "url": "mongodb://localhost:27017/jcms",
             "host": "127.0.0.1",
             "database": "site"
         }

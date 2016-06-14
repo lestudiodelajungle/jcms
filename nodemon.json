@@ -2,8 +2,9 @@
     "restartable": "rs",
     "ignore": [
     ".git",
-    "www/Data/",
-    "www/images/",
+    "jcms.log",
+    ".png",
+    "logs/",
     "node_modules/"
   ],
     "watch": ["node_modules/jcms-framework/", "./"],

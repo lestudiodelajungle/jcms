@@ -1,15 +1,20 @@
-/*jslint nomen: true, es5: true*/
-/*globals module, require, console, dirRoot, __dirname, exports*/
-var classModule = require('jcms-framework').Module;
+/*jslint nomen: true*/
+/*globals module, require, log, dirRoot, __dirname, exports*/
+"use strict";
+var Module = require('jcms-framework').Module;
+
+
 var ctl = require("./controler");
 var router = require("./router");
-var express = require('express');
 
-class Core extends classModule {
-    constructor(app) {
-        super("core", app); // pour appeler le construceur parent, y'en a besoin sinon this n'est pas definis
+var fs = require('fs');
+
+class Core extends Module {
+    constructor(name, app, db) {
+        super("core", app, db); // pour appeler le construceur parent, y'en a besoin sinon this n'est pas definis
         this.controler = new ctl();
-        this.router = new router(this.controler);
+        this.router = new router(this.app, this.controler, this.name);
+        log.log("constructeur core");
     }
 };
 

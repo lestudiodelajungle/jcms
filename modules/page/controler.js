@@ -1,5 +1,5 @@
 // module controller page
-/*globals require, global, module, define, console*/
+/*globals require, global, module, define, log*/
 
 class Controler {
     constructor() {
@@ -9,7 +9,7 @@ class Controler {
         return name;
     }
     getPage(name) {
-        console.log(JSON.stringify(require("./public/view/" + name + ".html")));
+        log.log(JSON.stringify(require("./public/view/" + name + ".html")));
         //return {content: require("./public/view/" + name + ".html")};
     }
     displayAdmin() {

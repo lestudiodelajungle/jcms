@@ -1,6 +1,0 @@
-pour integrer plus des fichier en plus de index.js il suffit d'importer les autre dans celui-ci.
-
-
-module indispansable !!
-
-sert a envoyer le html du cms

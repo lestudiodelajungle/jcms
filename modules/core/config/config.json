@@ -1,16 +1,8 @@
 {
-    route: {
-        [{
-            method: "",
-            route: "",
-            call: ""
-        }]
-    },
-    rest: {
-        [{
-            method: "",
-            method: "",
-            call: ""
-        }]
+    "partials": {
+        "menu": "block/menu",
+        "footer": "block/footer",
+        "menuAdmin": "block/menuAdmin",
+        "footerAdmin": "block/footerAdmin"
     }
 }

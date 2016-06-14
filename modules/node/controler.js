@@ -8,8 +8,20 @@ class Controler extends controler {
         super();
         this.model = model;
     }
-    connectUser() {
-        this.model.getUser(id);
+    getNode() {
+
+    }
+    getAllNode() {
+
+    }
+    newNode() {
+
+    }
+    updateNode() {
+
+    }
+    deleteNode() {
+
     }
 }
 module.exports = Controler;

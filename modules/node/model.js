@@ -4,7 +4,7 @@
 var model = require('jcms-framework').Model;
 class Model extends model {
     constructor(db, name) {
-        super(db, name);
+        super();
     }
 }
 module.exports = Model;

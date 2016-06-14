@@ -1,19 +1,19 @@
-///*globals module, require, console, dirRoot, exports, __dirname*/
-var classModule = require('jcms-framework').Module;
+///*globals module, require, log, dirRoot, exports, __dirname*/
+var Module = require('jcms-framework').Module;
+var Model = require('jcms-framework').Model;
 var ctl = require("./controler");
-var mdl = require("./model");
+//var mdl = require("./model");
 var router = require("./router");
-var express = require('express');
 
-class User extends classModule {
-    constructor(app) {
+class User extends Module {
+    constructor(app, db) {
         super("user", app); // pour appeler le construceur parent, y'en a besoin sinon this n'est pas definis
-        this.model = new mdl();
+        this.model = new Model(db, "user");
         this.controler = new ctl(this.model);
-        this.router = new router(this.controler, app.auth);
+        this.router = new router(app, this.controler, this.name, app.auth);
 
         this.app.use("/user/login", function (req, res, next) {
-            console.log("peritti");
+            log.log("peritti");
 
             next();
         });

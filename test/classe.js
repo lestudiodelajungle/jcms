@@ -1,9 +1,14 @@
-var myValues = [1, 2, 3, 4, 5];
+"use strict";
+let x = "test"
+class Truc {
 
-var squared = myValues.map(x => x * x);
-console.log(squared); //-> [1, 4, 9, 16, 25]
+    constructor() {
+        let y = "test"
+    }
+    hello() {
+        console.log(y)
+    }
+}
 
-//définition d'un function qui permet de déterminer si n nombre est pair
-var even = (x) => x % 2 == 0;
-var evenValues = myValues.filter(even);
-console.log(evenValues); //-> [2, 4]
+var t = new Truc();
+t.hello();

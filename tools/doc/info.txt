@@ -46,10 +46,17 @@ il les charges et fait en sorte qu'il fonctionnent bien entre eux
     https://www.npmjs.org/package/mysql
 
 ===========================================================
-TODO
+                          TODO
 ===========================================================
 
 - panneau admin
+    - vue d'ensemble
+    - gestion du model page
+    - gestion du model noeud
+    - gestion du model user
+    - gestionnaire de modules
+    - gestion des themes, menu, etc
+    - parametres du site
 
   === base de donnée ===
 - completer le mongodb/index.js avec la gestion de requete bien chiadé
@@ -62,12 +69,26 @@ TODO
   en partant des fichier d'origine d'un module
 - faire une classe qui puissent charger les module à partir de la base de donnée
 
-===========================================================/
+===========================================================
+
+
+===========================================================
+                    Moteur de template
+===========================================================
+ce dont j'ai besoin
+1 en pratique:
+    - les menu doivent etre disponible via une balise
+    - pareil pour tout un tas de variable
+    - il doit donc y'avoir une notion de "block"
+    
+2 en theorie:
+
+3 donc:
 
 
 
 ===========================================================
-        CHANGELOG
+                      CHANGELOG
 ===========================================================
 
 
@@ -76,7 +97,7 @@ TODO
 - chargement automatique des routes
 - coeur de l'application
 
-===========================================================/
+===========================================================
 
 
 
@@ -125,8 +146,6 @@ TODO
 └── Server.js               // le fichier principale qu'il faut lancer pour demarrer le serveur
 ==========================================
 
-
-
 ==========================================
         arborescence d'un module
 ==========================================
@@ -155,3 +174,6 @@ TODO
 
 
 ===========================================
+
+
+

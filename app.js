@@ -1,28 +1,38 @@
 /*jslint es6: true, nomen: true, devel: true */
 /*globals require, process, __dirname, code, global, exports*/
 global.dirRoot = __dirname;
+global.a = "12345";
 (function (exports, global) {
     "use strict";
     var jcms, dirRoot,
-        $$ = require('jcms-framework');
-    $$.config = require(__dirname + "/config/config.json"); // on charge la config
-    global.$$ = $$;
+        colors = require('colors'),
+        winston = require('winston'); // pour ameliorer la console
 
     class JCMS {
         constructor() {
+            console.time("concatenation");
             global.dirRoot = __dirname;
-            this.CONFIG = $$.config;
+            // on charge la plupart des modules
+            this.cluster = require('cluster');
             this.express = require('express');
-            this.app = this.express();
             this.bodyParser = require('body-parser');
             this.methodOverride = require('method-override');
-            this.cluster = require('cluster');
-            this.isMultiThread = false; // pour que l'appli soit multi-thread ou non
-            this.args = process.argv.slice(2); // pour recuperer les arguments
             this.template = require('hbs');
             this.auth = require('passport');
-            this.app.auth = this.auth;
+            this.mongo = require('mongodb').MongoClient;
+            // on recupere les fichiers config
+            this.CONFIG = require(__dirname + "/config/config.json");
             this.pluginsList = require("./config/plugins.json"); // liste des module (module)
+
+            this.env = "dev";
+            this.isMultiThread = false; // mode multi-thread: true/false
+            this.args = process.argv.slice(2); // pour recuperer les arguments
+
+            //            this.template.open = '{{';
+            //            this.template.close = '}}';
+
+            //            this.app.auth = this.auth;
+
             this.modules = {}; // contient les modules
 
             this.info = {
@@ -36,26 +46,16 @@ global.dirRoot = __dirname;
                 "version": "beta 0.1",
                 "author": "severin"
             };
-
-            this.configure();
         }
 
         configure() {
-            //this.register('.html', require('ejs'));
-            //        this.app.engine('html', $$.Template);
-            //        this.app.engine('html', function (filePath, options, callback) {
-            //            return new $$.Template(filePath, options, callback);
-            //        });
-            //            this.app.engine('html', function (filePath, options, callback) {
-            //                console.log("chemin " + filePath);
-            //                return new $$.Template(filePath, options, callback);
-            //            });
-
+            log.debug("app:configure()");
+            this.app = this.express();
             this.app.set('view engine', 'html');
             this.app.engine('html', this.template.__express);
             this.app.set("views", []);
             this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
-                layout: "/home/severin/web/jcms/modules/core/admin/view/layout.html"
+                layout: "/home/severin/web/jcms/modules/core/public/view/layout/layout.html"
                     //page: 'truc',
                     //title: 'twop'
             }); // Dans tous nos templates
@@ -63,7 +63,7 @@ global.dirRoot = __dirname;
             this.app.use(this.bodyParser.urlencoded({
                 extended: true
             })); // for parsing application/x-www-form-urlencoded
-            //this.use(this.express.multipart({ uploadDir: "/" }));
+            // this.use(this.express.multipart({ uploadDir: "/" }));
             this.app.use(this.express.static(__dirname + '/public'));
             this.app.use(this.express.static(__dirname + '/admin'));
 
@@ -73,133 +73,244 @@ global.dirRoot = __dirname;
             this.app.use(this.auth.session({
                 secret: 'ilovescotchscotchyscotchscotch'
             }));
+
             var LocalStrategy = require('passport-local').Strategy;
             this.auth.use(new LocalStrategy(
                 function (username, password, done) {
-                    console.log("tutului");
+                    log.info("tutului");
                     return done();
                 }
             ));
+
+            this.log = global.log;
+
+            // permet d'affecter les variable local a handlebars
+            this.template.localsAsTemplateData(this.app);
+            this.app.locals.about = this.about;
+            this.app.locals.info = this.info;
+
         }
 
-        startApp() {
-            var i, cpuCount, idWorker;
+        start() {
+            log.debug("app:start()");
+            this.clusterize();
+        }
+
+        clusterize() {
+            log.debug("app:clusterrize()");
+            var i, cpuCount, idWorker,
+                cpuCount = require('os').cpus().length; // on compte le nb de cpu disponible
 
             if (this.isMultiThread === true) {
                 // gestion du multi-threading
                 if (this.cluster.isMaster) {
-                    console.info("==================================================================== \n" +
-                        " \n" +
-                        " Bienvenue sur jcms !! \n" +
-                        " \n" +
-                        " Autheur: Tarzan79 \n" +
-                        " Adresse Mail: sev794@yahoo.fr \n" +
-                        " Version: en developpement \n" +
-                        " \n" +
-                        "====================================================================");
+                    this.welcome();
 
-                    cpuCount = require('os').cpus().length; // on compte le nb de cpu disponible
                     // on créer un worker pour chaque cpu
                     for (i = 0; i < cpuCount; i += 1) {
                         this.cluster.fork();
                     }
-                    //                this.cluster.on('online', function (worker) {
-                    //                    console.log('Worker ' + worker.process.pid + ' is online');
-                    //                });
+
+                    this.cluster.on('online', function (worker) {
+                        log.info('Worker ' + worker.process.pid + ' is online');
+                    });
 
                     this.cluster.on('exit', function (worker, code, signal) {
-                        console.info('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
-                        console.info('Starting a new worker');
+                        log.info('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+                        log.info('Starting a new worker');
                         this.cluster.fork();
                     });
                 } else { // pour chaque worker on execute le code si-dessous
                     idWorker = this.cluster.worker.id;
-                    this.startModules();
-                    this.startServer(idWorker);
+                    this.startApp(idWorker);
                 }
             } else {
-                console.info("==================================================================== \n" +
-                    " \n" +
-                    " Bienvenue sur jcms !! \n" +
-                    " \n" +
-                    " Autheur: Tarzan79 \n" +
-                    " Adresse Mail: sev794@yahoo.fr \n" +
-                    " Version: en developpement \n" +
-                    " \n" +
-                    "====================================================================");
-
-                this.startModules();
-                this.startServer(idWorker);
+                this.welcome();
+                this.startApp();
             }
         }
 
+        welcome() {
+            log.log("verbose", "==================================================================== \n".green +
+                " \n" +
+                " Bienvenue sur jcms !! \n".green +
+                " \n" +
+                " Autheur: ".green + "Tarzan79 \n".yellow +
+                " Adresse Mail: ".green + "sev794@yahoo.fr \n".yellow +
+                " Version:".green + " en developpement \n".yellow +
+                " \n" +
+                "====================================================================".green);
+        }
+
+        startApp(idWorker) {
+            log.debug("app:startApp()");
+            this.configure();
+
+            ////////////////////////////////////////////////////
+            var userRouter = this.express.Router();
+
+
+            userRouter.route('/')
+                .get(function (req, res) {
+                    res.status(200)
+                        .send('hello users');
+                });
+
+            userRouter.route('/:user')
+                .get(function (req, res) {
+                    res.status(200)
+                        .send('hello user ' + JSON.stringify(req.params));
+                });
+
+
+            this.app.use('/user', userRouter);
+
+            ////////////////////////////////////////////////////
+            var itemRouter = this.express.Router({
+                mergeParams: true
+            });
+
+
+            itemRouter.route('/')
+                .get(function (req, res) {
+                    res.status(200)
+                        .send('hello items from user ' + req.params.userId);
+                });
+
+            itemRouter.route('/:itemId')
+                .get(function (req, res) {
+                    res.status(200)
+                        .send('hello item ' + req.params.itemId + ' from user ' + JSON.stringify(req.params));
+                });
+
+            userRouter.use('/:userId?/items', itemRouter);
+
+            ////////////////////////////////////////////////////////
+
+
+            var self = this;
+            this.mongo.connect("mongodb://localhost:27017/jcms").then(function (db) {
+                self.db = db;
+                self.startModules();
+
+                self.startServer();
+
+                self.app.use(function (req, res, next) {
+                    if (req.accepts("html")) {
+                        res.type("html");
+                    }
+                    if (req.accepts("json")) {
+                        res.type("json");
+                    }
+                    if (req.accepts("xml")) {
+                        res.type("xml");
+                    }
+                    next();
+                });
+
+                //                self.app.use(function (err, req, res, next) {
+                //                    res.status(err.status || 500);
+                //                    res.status('error').send({
+                //                        message: err.message,
+                //                        error: err
+                //                    });
+                //                });
+
+                //                self.app.use(function (req, res, next) {
+                //                    var err = new Error('Not Found : ' + req.path);
+                //                    err.status = 404;
+                //                    next(err);
+                //                });
+
+
+            }).catch(function (err) {
+                log.error("erreur: " + err.stack);
+                throw new Error(err);
+
+            });
+        }
+
+        // sync method
         startModules() {
+            log.debug("app:start()");
             var i, pluginName, plugin, Module;
-            /* =============== on charge les plugins =============== */
             if (this.pluginsList.length > 0) {
                 for (i = 0; i < this.pluginsList.length; i += 1) {
                     pluginName = this.pluginsList[i];
                     Module = require(global.dirRoot + "/modules/" + pluginName);
-                    plugin = new Module(this.app);
+                    plugin = new Module(pluginName, this.app, this.db);
                     this.template.registerPartials(__dirname + "/modules/" + pluginName + "/public/view");
                     this.modules[pluginName] = plugin.start();
                 }
+                log.info('info', "nombre de plugins : %s", this.pluginsList.length);
             }
-            console.info("nombre de plugins : " + this.pluginsList.length);
-            this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
-                layout: "/home/severin/web/jcms/modules/core/admin/view/layout.html"
-                    //page: 'truc',
-                    //title: 'twop'
-            }); // Dans tous nos templates
+
         }
 
         startServer(idWorker) {
-            var server,
-                address = this.args[0] || "0.0.0.0",
+            log.debug("app:startServer");
+            var address = this.args[0] || "0.0.0.0",
                 port = this.args[1] || 3000,
                 info = this.info,
                 name = this.about.name;
 
-            server = this.app.listen(port, address, function () {
-                var msg = idWorker ? "Cluster " + idWorker + " démarré à l'adresse %s:%d" : "serveur " + name + " démarré à l'adresse %s:%d";
-                console.info(msg,
-                    server.address().address,
-                    server.address().port);
+            this.app.listen(port, address, function () {
+                var msg = idWorker ? "Cluster " + idWorker + " démarré à l'adresse %s:%d" : "serveur " + name + " démarré à l'adresse %s:%s";
+                log.info(msg, address.yellow, port.toString().yellow);
                 info = {
-                    "address": server.address().address,
-                    "port": server.address().port
+                    "address": address,
+                    "port": port
                         //		"env": ""
                 };
             });
         }
     }
 
-    exports.JCMS = JCMS;
-    /* definition des variable global*/
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var winston = require('winston');
+    exports.JCMS = JCMS; // au cas ou ce script serai utiliser comme un module
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop))
+            return false;
+        }
+        return true;
+    }
 
-    jcms = global.jcms = new JCMS();
-    /* demarrage de l'application*/
-    //jcms.configure();
-    jcms.startApp();
+    global.log = require("./libs/log");
+    jcms = global.jcms = new JCMS().start();
 }(exports, global));
 
 
-// ce que doit renvoyé un module
-//1 - les routes, enfin le router avec des routes definis
-//2 - les methodes du controler ou par defaut une classe controleur
-//3 - pareils pour le modele/schemma mongoDB
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-//Pourquoi ?
-//1 bah en fait les route y'en a pas vraiment besoin mais faut pour les lancer et les modifier
-//2 elle doivent etre accessible pour pouvoir etre utilisé par d'autre modules
-//3 aussi pour etre utiliser par d'autre modules
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
+};
 
-//donc concretement ...
-// solution A
-//unModule = {
-//    router: {},
-//    controler: {},
-//    schema: {}
-//}
+
+// dash to camelCase
+String.prototype.toCamel = function () {
+    return this.replace(/(\-[a-z])/g, function ($1) {
+        return $1.toUpperCase().replace('-', '');
+    });
+};
+
+// camel to dash (or spinal-case)
+String.prototype.toDash = function () {
+    return this.replace(/([A-Z])/g, function ($1) {
+        return "-" + $1.toLowerCase();
+    });
+};
+
+//camel to snake_case
+String.prototype.toUnderscore = function () {
+    return this.replace(/([A-Z])/g, function ($1) {
+        return "_" + $1.toLowerCase();
+    });
+};
