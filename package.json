@@ -4,6 +4,8 @@
     "description": "un cms utilisant node.js et mongoDB",
     "main": "app.js",
     "dependencies": {
+        "passport": "latest",
+        "passport-local": "latest",
         "body-parser": "latest",
         "bootstrap": "latest",
         "colors": "latest",

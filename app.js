@@ -20,6 +20,7 @@ global.a = "12345";
             this.template = require('hbs');
             this.auth = require('passport');
             this.mongo = require('mongodb').MongoClient;
+
             // on recupere les fichiers config
             this.CONFIG = require(__dirname + "/config/config.json");
             this.pluginsList = require("./config/plugins.json"); // liste des module (module)
@@ -189,8 +190,8 @@ global.a = "12345";
 
 
             var self = this;
-            this.mongo.connect("mongodb://localhost:27017/jcms").then(function (db) {
-                self.db = db;
+//            this.mongo.connect("mongodb://localhost:27017/jcms").then(function (db) {
+//                self.db = db;
                 self.startModules();
 
                 self.startServer();
@@ -222,12 +223,12 @@ global.a = "12345";
                 //                    next(err);
                 //                });
 
-
-            }).catch(function (err) {
-                log.error("erreur: " + err.stack);
-                throw new Error(err);
-
-            });
+//
+//            }).catch(function (err) {
+//                log.error(err.stack);
+//                throw new Error(err);
+//
+//            });
         }
 
         // sync method
