@@ -8,7 +8,7 @@ var router = require("./router");
 class Node extends Module {
     constructor(name, app, db) {
         super("node", app); // pour appeler le construceur parent, y'en a besoin sinon this n'est pas definis
-        this.model = new Model(db, "node");
+        //this.model = new Model(db, "node");
         this.controler = new ctl(this.model);
         this.router = new router(this.app, this.controler, this.name);
     }
