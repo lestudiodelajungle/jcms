@@ -1,0 +1,9 @@
+<ul class="no-style">
+    <li class="active"><a href="/admin/accueil">Accueil</a></li>
+    {{#each menu}}
+      {{#each this}}
+        <li class=""><a href="/admin{{this}}">{{@key}}</a></li>
+      {{/each}}
+    {{/each}}
+    <li class=""><a href="/admin/reglage">Réglages</a></li>
+</ul>

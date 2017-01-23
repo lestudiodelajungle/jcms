@@ -1,4 +1,4 @@
-var a = require('../controller');
+var a = require('../Controler');
 
 
 var c = a.create({title: "test", content: "trucucucuccu !!!"});

@@ -1,4 +1,38 @@
-<section id="content">
+<!doctype html>
+<html>
+
+<head>
+    {{> admin_head }}
+</head>
+
+<body id="body">
+    <div class="container">
+        <div class="row">
+            <div class="column well">
+                {{> admin_header}}
+            </div>
+        </div>
 
 
-</section>
+        <div class="row">
+            <div class="column column-10 well">
+                {{> admin_menu}}
+            </div>
+            <div class="column well">
+                {{{body}}}
+
+            </div>
+
+        </div>
+<div class="row">
+            <div class="column well">
+        {{> admin_footer}}
+    </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

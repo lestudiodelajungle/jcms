@@ -2,6 +2,10 @@
 /*globals require, process, __dirname, code, global, exports*/
 global.dirRoot = __dirname;
 global.a = "12345";
+global.log = require("./libs/log");
+global.framework = require('./libs/jcms-framework');
+
+
 (function (exports, global) {
     "use strict";
     var jcms, dirRoot,
@@ -9,7 +13,11 @@ global.a = "12345";
         winston = require('winston'); // pour ameliorer la console
 
     class JCMS {
-        constructor() {
+        /**
+         * charge la plupart des module pour nodejs
+         * et les fichier de config
+         */
+         constructor() {
             console.time("concatenation");
             global.dirRoot = __dirname;
             // on charge la plupart des modules
@@ -19,7 +27,7 @@ global.a = "12345";
             this.methodOverride = require('method-override');
             this.template = require('hbs');
             this.auth = require('passport');
-            this.mongo = require('mongodb').MongoClient;
+            this.core = {};
 
             // on recupere les fichiers config
             this.CONFIG = require(__dirname + "/config/config.json");
@@ -49,24 +57,28 @@ global.a = "12345";
             };
         }
 
+        /**
+         * configure principalement le module Express
+         */
+
         configure() {
             log.debug("app:configure()");
             this.app = this.express();
-            this.app.set('view engine', 'html');
-            this.app.engine('html', this.template.__express);
-            this.app.set("views", []);
-            this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
-                layout: "/home/severin/web/jcms/modules/core/public/view/layout/layout.html"
-                    //page: 'truc',
-                    //title: 'twop'
-            }); // Dans tous nos templates
+//            this.app.set('view engine', 'html');
+//            this.app.engine('html', this.template.__express);
+//            this.app.set("views", []);
+//            this.app.set('view options', { // on peut definir quelque variable, app.title -> twop
+//                layout: "/home/severin/web/jcms/modules/core/public/view/layout/layout.html"
+//                    //page: 'truc',
+//                    //title: 'twop'
+//            }); // Dans tous nos templates
             this.app.use(this.bodyParser.json()); // for parsing application/json
             this.app.use(this.bodyParser.urlencoded({
                 extended: true
             })); // for parsing application/x-www-form-urlencoded
             // this.use(this.express.multipart({ uploadDir: "/" }));
-            this.app.use(this.express.static(__dirname + '/public'));
-            this.app.use(this.express.static(__dirname + '/admin'));
+//            this.app.use(this.express.static(__dirname + '/public'));
+//            this.app.use(this.express.static(__dirname + '/admin'));
 
             // Initialize Passport and restore authentication state, if any, from the
             // session.
@@ -83,20 +95,23 @@ global.a = "12345";
                 }
             ));
 
-            this.log = global.log;
 
-            // permet d'affecter les variable local a handlebars
-            this.template.localsAsTemplateData(this.app);
             this.app.locals.about = this.about;
             this.app.locals.info = this.info;
 
         }
 
+        /**
+         * lance le tout
+         */
         start() {
             log.debug("app:start()");
             this.clusterize();
         }
 
+        /**
+         * créer des cluster pour chaque thread du cpu
+         */
         clusterize() {
             log.debug("app:clusterrize()");
             var i, cpuCount, idWorker,
@@ -143,111 +158,22 @@ global.a = "12345";
                 "====================================================================".green);
         }
 
+        /**
+         * lance une instance de l'application
+         */
         startApp(idWorker) {
             log.debug("app:startApp()");
             this.configure();
-
-            ////////////////////////////////////////////////////
-            var userRouter = this.express.Router();
-
-
-            userRouter.route('/')
-                .get(function (req, res) {
-                    res.status(200)
-                        .send('hello users');
-                });
-
-            userRouter.route('/:user')
-                .get(function (req, res) {
-                    res.status(200)
-                        .send('hello user ' + JSON.stringify(req.params));
-                });
-
-
-            this.app.use('/user', userRouter);
-
-            ////////////////////////////////////////////////////
-            var itemRouter = this.express.Router({
-                mergeParams: true
-            });
-
-
-            itemRouter.route('/')
-                .get(function (req, res) {
-                    res.status(200)
-                        .send('hello items from user ' + req.params.userId);
-                });
-
-            itemRouter.route('/:itemId')
-                .get(function (req, res) {
-                    res.status(200)
-                        .send('hello item ' + req.params.itemId + ' from user ' + JSON.stringify(req.params));
-                });
-
-            userRouter.use('/:userId?/items', itemRouter);
-
-            ////////////////////////////////////////////////////////
-
-
-            var self = this;
-//            this.mongo.connect("mongodb://localhost:27017/jcms").then(function (db) {
-//                self.db = db;
-                self.startModules();
-
-                self.startServer();
-
-                self.app.use(function (req, res, next) {
-                    if (req.accepts("html")) {
-                        res.type("html");
-                    }
-                    if (req.accepts("json")) {
-                        res.type("json");
-                    }
-                    if (req.accepts("xml")) {
-                        res.type("xml");
-                    }
-                    next();
-                });
-
-                //                self.app.use(function (err, req, res, next) {
-                //                    res.status(err.status || 500);
-                //                    res.status('error').send({
-                //                        message: err.message,
-                //                        error: err
-                //                    });
-                //                });
-
-                //                self.app.use(function (req, res, next) {
-                //                    var err = new Error('Not Found : ' + req.path);
-                //                    err.status = 404;
-                //                    next(err);
-                //                });
-
-//
-//            }).catch(function (err) {
-//                log.error(err.stack);
-//                throw new Error(err);
-//
-//            });
+            var core = require(global.dirRoot + "/modules/core");
+            this.core = new core(this.app);
+            this.startServer(idWorker);
         }
 
-        // sync method
-        startModules() {
-            log.debug("app:start()");
-            var i, pluginName, plugin, Module;
-            if (this.pluginsList.length > 0) {
-                for (i = 0; i < this.pluginsList.length; i += 1) {
-                    pluginName = this.pluginsList[i];
-                    Module = require(global.dirRoot + "/modules/" + pluginName);
-                    plugin = new Module(pluginName, this.app, this.db);
-                    this.template.registerPartials(__dirname + "/modules/" + pluginName + "/public/view");
-                    this.modules[pluginName] = plugin.start();
-                }
-                log.info('info', "nombre de plugins : %s", this.pluginsList.length);
-            }
 
-        }
-
+        /**
+         * demarre le serveur express
+         * @param {number} idWorker le worker sur lequel lancer le serveur
+         */
         startServer(idWorker) {
             log.debug("app:startServer");
             var address = this.args[0] || "0.0.0.0",
@@ -271,6 +197,12 @@ global.a = "12345";
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     exports.JCMS = JCMS; // au cas ou ce script serai utiliser comme un module
+
+    /**
+     * determine si un objet est vide ou non
+     * @param   {object} obj objet à traiter
+     * @returns {boolean}  true si c'est vide
+     */
     function isEmpty(obj) {
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop))
@@ -278,8 +210,6 @@ global.a = "12345";
         }
         return true;
     }
-
-    global.log = require("./libs/log");
     jcms = global.jcms = new JCMS().start();
 }(exports, global));
 
@@ -295,23 +225,4 @@ String.prototype.trim = function () {
 };
 
 
-// dash to camelCase
-String.prototype.toCamel = function () {
-    return this.replace(/(\-[a-z])/g, function ($1) {
-        return $1.toUpperCase().replace('-', '');
-    });
-};
 
-// camel to dash (or spinal-case)
-String.prototype.toDash = function () {
-    return this.replace(/([A-Z])/g, function ($1) {
-        return "-" + $1.toLowerCase();
-    });
-};
-
-//camel to snake_case
-String.prototype.toUnderscore = function () {
-    return this.replace(/([A-Z])/g, function ($1) {
-        return "_" + $1.toLowerCase();
-    });
-};

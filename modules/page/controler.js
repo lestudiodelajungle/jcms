@@ -1,4 +1,4 @@
-// module controller page
+// module Controler page
 /*globals require, global, module, define, log*/
 
 class Controler {

@@ -1,0 +1,1 @@
+le Framework du projet JCMS, donne acces l'API serveur

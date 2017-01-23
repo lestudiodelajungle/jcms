@@ -1,0 +1,91 @@
+<div id="connection" style="display:none;">
+    <form onsubmit="valid_connect(this); return false;" id='form_connect'>
+        pseudo
+        <br>
+        <input type="text" name="pseudo">
+        <br>......................................
+        <br> mot de passe
+        <br>
+        <input type="password" name="mdp">
+        <br>......................................
+        <br>
+        <label>
+            <input type="checkbox"> Se souvenir de moi </label>
+        <br>
+        <input type="reset" value="Annuler" onclick="fermer(truc);">
+        <input type="submit">
+        <hr>
+        <a name="m" href="#">mot de passe perdu</a>
+        <br>
+        <a name="inscrire" href="#">Créer un compte</a>
+    </form>
+</div>
+
+<div id="inscrire" style="display:none;">
+    <form onsubmit="valid_inscrit(this); return false;" id='form_inscrire' method="POST" action="/twop/include/inscrire.php">
+        pseudo
+        <br>
+        <input type="text" name="pseudo">
+        <hr> mot de passe
+        <br>
+        <input type="password" name="mdp">
+        <hr> confirmation
+        <br>
+        <input type="password" name="confirm">
+        <hr> e-mail
+        <br>
+        <input type="text" name="mail">
+        <hr>
+        <input type="reset" onclick="fermer(truc);">
+        <input type="submit">
+        <hr>
+        <a name="connection" href="#">mot de passe perdu</a>
+        <br>
+        <a name="inscrire" href="#">Créer un compte</a>
+    </form>
+</div>
+<div id="ajoutlog" style="display:none;">
+    <form id='form_ajoutlog' method="POST" action="/twop/include/ajouterlog.php">
+        <label>Version :
+            <input type="text" name="version">
+        </label>
+        <br>
+        <label>Date :
+            <input type="text" name="jour" id="jourlog">
+        </label>
+        <input onclick="ajouterJour()" type="button" value="ajd">
+        <br>
+        <label>Categorie :
+            <input type="text" name="cat" id="catbug">
+        </label>
+        <br>
+        <label>Log :
+            <br>
+            <textarea name="log"></textarea>
+        </label>
+        <br>
+        <input type="submit" value="ajouter">
+    </form>
+</div>
+<div id="ajoutbug" style="display:none;">
+    <form id='form_ajoutbug' method="POST" action="/twop/include/ajouterbug.php">
+        <label>Date :
+            <input type="text" name="jour" id="jourbug">
+        </label>
+        <input type="button" value="ajd">
+        <br>
+        <label>Categorie/Lieu :
+            <input type="text" name="cat" id="catlog">
+        </label>
+        <br>
+        <label>Bug :
+            <textarea name="bug"></textarea>
+        </label>
+        <br>
+        <input type="submit" value="ajouter">
+    </form>
+</div>
+
+<div id="help_form">
+    <!-- l'aide qui s'affiche quand le formulaire n'est pas valide-->
+</div>

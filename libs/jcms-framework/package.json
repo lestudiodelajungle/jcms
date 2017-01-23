@@ -1,0 +1,103 @@
+{
+  "_args": [
+    [
+      "jcms-framework@latest",
+      "/home/severin/web/jcms"
+    ],
+    [
+      {
+        "name": "jcms-framework",
+        "raw": "jcms-framework@latest",
+        "rawSpec": "latest",
+        "scope": null,
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/severin/web/jcms"
+    ]
+  ],
+  "_from": "jcms-framework@latest",
+  "_id": "jcms-framework@0.0.6",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/jcms-framework",
+  "_nodeVersion": "5.10.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/jcms-framework-0.0.6.tgz_1460484191236_0.15665252786129713"
+  },
+  "_npmUser": {
+    "email": "parthenayseverin@gmail.com",
+    "name": "tarzan79"
+  },
+  "_npmVersion": "3.8.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "jcms-framework",
+    "raw": "jcms-framework@latest",
+    "rawSpec": "latest",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/jcms-framework/-/jcms-framework-0.0.6.tgz",
+  "_shasum": "bc980d828d9808f3cdc008f798ff054de3bc54aa",
+  "_shrinkwrap": null,
+  "_spec": "jcms-framework@latest",
+  "_where": "/home/severin/web/jcms",
+  "author": {
+    "name": "tarzan79"
+  },
+  "bugs": {
+    "url": "https://github.com/tarzan79/jcms-framework/issues"
+  },
+  "dependencies": {
+    "backbone": "^1.2.3",
+    "backbone-validation": "^0.11.5",
+    "colors": "latest",
+    "ejs": "^2.3.4",
+    "express": "latest",
+    "rsvp": "^3.1.0",
+    "should": "^7.1.0"
+  },
+  "description": "framework pour nodejs du projet jcms",
+  "devDependencies": {
+    "mocha": "",
+    "should": ""
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dist": {
+    "shasum": "bc980d828d9808f3cdc008f798ff054de3bc54aa",
+    "tarball": "https://registry.npmjs.org/jcms-framework/-/jcms-framework-0.0.6.tgz"
+  },
+  "gitHead": "36faccbb1fbbfa4d17ac76062f6d286d78103650",
+  "homepage": "https://github.com/tarzan79/jcms-framework#readme",
+  "keywords": [
+    "framework",
+    "jcms"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "parthenayseverin@gmail.com",
+      "name": "tarzan79"
+    }
+  ],
+  "name": "jcms-framework",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tarzan79/jcms-framework.git"
+  },
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "version": "0.0.6"
+}

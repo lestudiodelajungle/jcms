@@ -1,0 +1,39 @@
+<!-- le menu -->
+<nav id="main_menu">
+    <div id="menu" class="menu">
+        <ul>
+            <li><a class="pushstate" href="/page/accueil">Accueil</a></li>
+            <li><a class="pushstate" href="/page/game">Jeux</a></li>
+
+            <li><a class="pushstate" href="/page/changelog">ChangeLog</a></li>
+            <li><a class="pushstate" href="/page/bugtracker">BugTracker</a></li>
+
+            <li><a href="#">Forum</a></li>
+        </ul>
+        <ul id="menu_editeur">
+            <li><a class="pushstate" href="/page/carte">Editeur</a></li>
+            <li><a class="pushstate" href="/page/spritemaker">SpriteMaker</a></li>
+        </ul>
+        <ul id="action">
+            <!-- la partie avec certaine commande quand tu est connecté -->
+
+        </ul>
+
+        <ul style="float: right;">
+            <!-- recherche -->
+            <li>
+                <input type="search" style="width:120px;" placeholder="recherche">
+            </li>
+            <li>
+                <input type="submit" value="ok">
+            </li>
+        </ul>
+
+        <ul id="userdata" style="float: right;">
+            <!-- affiche soit le connexion et inscription ou les information du gars connecté -->
+            <li><a id="connexion" class="pushstate" href="/user/login" class="bouton" name="connection" onclick="connection('connection');">Se connecter</a></li>
+            <li><a id="inscription" class="pushstate" href="inscription" class="bouton" name="inscrire" onclick="connection('inscrire');">Créer un compte</a></li>
+        </ul>
+
+    </div>
+</nav>

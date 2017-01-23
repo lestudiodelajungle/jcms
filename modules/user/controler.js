@@ -1,7 +1,7 @@
-// module controller page
+// module Controler page
 /*globals require, global, module, define, log*/
 "use strict";
-var controler = require('jcms-framework').Controler;
+var controler = framework.Controler;
 
 class Controler extends controler {
     constructor(model) {

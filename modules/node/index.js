@@ -1,6 +1,6 @@
 ///*globals module, require, log, dirRoot, exports, __dirname*/
-var Module = require('jcms-framework').Module;
-var Model = require('jcms-framework').Model;
+var Module = framework.Module;
+var Model = framework.Model;
 var ctl = require("./controler");
 //var mdl = require("./model");
 var router = require("./router");

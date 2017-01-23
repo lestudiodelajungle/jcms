@@ -8,7 +8,7 @@ var winston = require("winston"),
 
 module.exports = new(winston.Logger)({
     transports: [new(winston.transports.File)({
-        filename: 'logs/jcms.log',
+        filename: 'tools/logs/jcms.log',
         level: 'info',
         json: false,
         maxsize: 5242880, //5MB

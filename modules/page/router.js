@@ -1,28 +1,25 @@
 /*globals require, GLOBAL, exports, log, dirRoot*/
-var router = require('jcms-framework').Router;
+"use strict";
+var router = framework.Router;
+
 class Router extends router {
     constructor(app, controler, url) {
         super(app, controler, url);
-    }
-    initRoute() {
-        var self = this;
-        this.route.get("/test", function (req, res) {
-            res.send("<!DOCTYPE html> < html >< head ><!-- En-tête de la page -->< meta charset = 'utf-8' / >< title > Titre < /title> < /head>< body ><!-- Corps de la page -->bla bla bla !!!< /body> < /html>");
-        });
+        log.log("core:router:constructor");
 
-        this.route.get("/:id?", function (req, res) {
-            var page = (req.params.id == "undefined" ? "accueil" : req.params.id);
-            res.render(self.controler.displayPage(page), {
-                "title": req.params.id
-            });
-        });
+        this.listRouteDefault = [
+            ["get", "/page", this.controler.page]
+//            ["get","/admin",this.controler.admin]
+        ];
+        this.listRouteAdmin = [
+            ["get", "/page", this.controler.page]
+        ];
 
-        this.rest.get("/:id?", function (req, res) {
-            res.send(self.controler.getPage(req.params.id));
-        });
-    }
-    initRest() {
+        this.addRouter("admin");
+        this.initRouter(this.router.admin, this.listRouteAdmin, "page"); // a rattacher au route.admin.page
 
+        this.initRouter(this.router.default, this.listRouteDefault, "page"); // a rattacher a route.default.page
     }
 }
+
 module.exports = Router;

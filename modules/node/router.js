@@ -1,5 +1,5 @@
 /*globals require, GLOBAL, exports, log, dirRoot*/
-var router = require('jcms-framework').Router;
+var router = framework.Router;
 var express = require('express');
 class Router extends router {
     constructor(app, controler, url) {
