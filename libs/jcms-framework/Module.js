@@ -19,18 +19,18 @@
             this.app.set('views', tt.split(",")); // la ou sont les vues
             this.menuAdmin = {};
         }
-//        init() {
-//            var Controler = require(dirRoot+"/modules/" + this.name + "/controler");
-//            var Router = require(dirRoot+"/modules/" + this.name + "/router");
-//
-//            this.configTemplate();
-//            this.controler = new Controler(this.menuAdmin);
-//            this.router = new Router(this.app, this.controler, "");
-//        }
-        initRoute() {
+
+        // relie un router à l'app express
+        useRouter() {
             this.app.use("/" + this.name, this.router.default);
 //            this.app.use("/api/" + this.name, this.router.rest);
         }
+
+        // rajoute un router à un autre router
+        addRouter(){
+
+        }
+        // recupere le menu admin
         getAdminMenu(){
             console.log(this);
             return this.router.listRouteAdmin;
@@ -41,6 +41,7 @@
         createDatabase() {
 
         }
+        // renvoie le chemin du dossier du module
         getPath() {
             return dirRoot + '/modules/' + this.name;
         }

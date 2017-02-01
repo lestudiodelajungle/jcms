@@ -4,22 +4,21 @@
 var ctl = framework.Controler;
 var menu = {}; //TODO regler ce probleme; je devrait pas avoir besoin de ca, mais un "menu": this.menu ne marche pas
 
-class Controler {
+class Controler extends ctl{
     constructor(leMenu) {
-        menu = leMenu;
+        super(leMenu);
     }
     index(req, res) {
-        console.log('======----=======------======----=====----====----===----=====----=====-----=====----=====');
-        res.render("block/index", {
-            "layout": "layout",
-            "menu": menu
-        });
+        render(res, "block/admin-index", {});
     }
     admin(req, res) {
-        res.render("block/admin-index", {
+        render(res, "block/admin-index", {
             "layout": "admin",
             "menu": menu
         });
+    }
+    render(res, tmp, data){
+        res.render(tmp, data);
     }
 }
 module.exports = Controler;

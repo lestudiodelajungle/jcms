@@ -1,44 +1,52 @@
 {
-    "name": "jcms",
-    "version": "0.0.1",
-    "description": "un cms utilisant node.js et mongoDB",
-    "main": "app.js",
-    "dependencies": {
-        "passport": "latest",
-        "passport-local": "latest",
-        "body-parser": "latest",
-        "bootstrap": "latest",
-        "colors": "latest",
-        "express": "latest",
-        "hbs": "latest",
-        "jcms-framework": "latest",
-        "kerberos": "0.0.18",
-        "method-override": "latest",
-        "mongodb": "^2.1.4",
-        "socket.io": "^1.2.0",
-        "tv4": "^1.2.7",
-        "winston": "latest"
-    },
-    "devDependencies": {
-        "mocha": "latest"
-    },
-    "scripts": {
-        "start": "nodemon --harmony app.js",
-        "test": "mocha $(find test -name '*.test.js')"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://www.github.com/tarzan79/jcms.git"
-    },
-    "keywords": [
+  "name": "jcms",
+  "version": "0.0.1",
+  "description": "un cms utilisant node.js et mongoDB",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "latest",
+    "bootstrap": "latest",
+    "colors": "latest",
+    "debug": "^2.6.0",
+    "express": "latest",
+    "hbs": "latest",
+    "jcms-framework": "latest",
+    "kerberos": "0.0.18",
+    "method-override": "latest",
+    "mongodb": "^2.1.4",
+    "passport": "latest",
+    "passport-local": "latest",
+    "socket.io": "^1.2.0",
+    "tv4": "^1.2.7",
+    "winston": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "scripts": {
+    "start": "nodemon --harmony app.js",
+    "test": "mocha $(find test -name '*.test.js')"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/tarzan79/jcms"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "keywords": [
     "cms",
     "node.js",
     "mongoDB",
     "javascript"
   ],
-    "author": "severin",
-    "license": "UNLICENSED",
-    "directories": {
-        "test": "test"
-    }
+  "author": {
+    "name": "séverin",
+    "email": "parthenayseverin@gmail.com"
+  },
+  "homepage": "http://jcms.parthenay.eu/",
+  "license": "UNLICENSED",
+  "directories": {
+    "test": "test"
+  }
 }

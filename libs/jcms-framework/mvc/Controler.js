@@ -1,37 +1,44 @@
 /*globals require, module, console, GLOBAL*/
 
 class Controler {
-    contructor() {
-        this.modele = modele; // bon en fait c'est le schema et non le model
+    contructor(model, menu) {
+//        this.modele = modele; // bon en fait c'est le schema et non le model
+        this.menu = menu;
+        this.model = model;
+    }
+    render(data){
+
     }
     connect(base) {
-        return this.modele.connect(base);
+        this.modele.connect(base);
     }
-    from(table) {
-        this.modele.from(table);
+    select(table) {
+        this.modele.select(table);
     }
     create(data) {
         this.modele.create(data);
     }
+    selectId(){
+        return this.modele.getOne(req, res);
+    }
     selectWhere(req, res) {
-
-        return this.modele.get(req, res);
+        return this.modele.getWhere(req, res);
     }
     selectAll() {
-        return this.modele.selectAll();
+        return this.modele.getAll();
     }
-    updateWhere(query, data) {
-        this.modele.updateWhere(query, data);
+    update(query, data) {
+        this.modele.update(query, data);
     }
-    updateAll(query, data) {
-        this.modele.updateAll(query, data);
-    }
-    deleteWhere(query) {
+//    updateAll(query, data) {
+//        this.modele.updateAll(query, data);
+//    }
+    delete(query) {
         this.modele.deleteWhere(query);
     }
-    deleteAll(data) {
-        this.modele.deleteAll(data);
-    }
+//    deleteAll(data) {
+//        this.modele.deleteAll(data);
+//    }
 }
 
 exports.Controler = Controler;

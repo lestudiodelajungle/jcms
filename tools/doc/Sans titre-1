@@ -1,0 +1,18 @@
+soit:
+
+var page = require('modelPage');
+var unePage = new page(); // créer une nouvelle page
+var resultat = unePage.getPage(id);
+
+soit:
+
+var Model = require('Model');
+var unePage = new Model('page');
+var resultat = unePage.getPage(id);
+
+
+///////////////////////////////////////
+
+var model = require("model");
+model.connect();
+var res = model.select("page").getAll();

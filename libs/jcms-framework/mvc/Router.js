@@ -13,7 +13,7 @@
             this.router.restfull = express.Router();
             this.router.admin = express.Router();
         }
-        // create all route for a specified router
+        // créer toute les routes pour un router donnée
         initRouter(router, list, baseUrl) {
             var baseUrl = baseUrl || "";
             for (var i = 0; i < list.length - 1; i++) {
@@ -22,13 +22,13 @@
             }
             this.app.use("/"+baseUrl, this.router.default);
         }
-        // create new router
+        // créer un nouveau router
         addRouter(name){
             if(this.router[name] == "undefined"){
                 this.router[name] = express.Router();
             }
         }
-        // add route into a specified router
+        // ajoute une route à un router
         addRoute(router, type, url, action) {
             router[type](url, action);
         }
